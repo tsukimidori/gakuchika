@@ -1,0 +1,11 @@
+<h1>マイページ</h1>
+<h3>基本情報</h3>
+<div>
+<%= "氏名：#{@user.last_name}#{@user.first_name}" %>
+</div>
+<% if current_user.id == @user.id %>
+  <div>
+  <%= "Email：#{@user.email}"%>
+  </div>
+<% end %>
+
