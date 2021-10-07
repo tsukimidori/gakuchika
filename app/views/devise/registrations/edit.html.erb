@@ -3,8 +3,10 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
-  <%= f.label :avatar, "プロフィール画像" %><br />
-  <%= f.file_field :avatar %>
+  <div class="field">
+    <%= f.label :avatar, "プロフィール画像" %><br />
+    <%= f.file_field :avatar %>
+  </div>
 
   <div class="field">
     <%= f.label :last_name, "Family name(苗字)" %><br />

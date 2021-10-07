@@ -39,6 +39,11 @@
   <div>
     <%= q.label :detail, '募集詳細' %><br><em>募集の詳細を書いてね<br>・詳しい活動日時や活動内容<br>・応募資格の詳細 etc..<br />
     <%= q.text_area :detail %>
+  </div>
+
+  <div>
+    <%= q.label :image, "イメージ画像" %><br />
+    <%= q.file_field :image %>
   </div><br />
 
   <div>

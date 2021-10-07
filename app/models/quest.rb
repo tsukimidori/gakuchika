@@ -9,4 +9,6 @@ class Quest < ApplicationRecord
 
   belongs_to :place
   belongs_to :target_attribute
+  belongs_to :user
+  has_one_attached :image
 end

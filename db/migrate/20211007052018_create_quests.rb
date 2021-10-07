@@ -9,6 +9,7 @@ class CreateQuests < ActiveRecord::Migration[6.0]
       t.text :detail
       t.integer :place_id,            null: false
       t.integer :target_attribute_id, null: false
+      t.references :user,             null: false, foreign_key: true
       t.timestamps
     end
   end
