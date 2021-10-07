@@ -1,0 +1,59 @@
+<h2>登録内容の変更</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <%= f.label :avatar, "プロフィール画像" %><br />
+  <%= f.file_field :avatar %>
+
+  <div class="field">
+    <%= f.label :last_name, "Family name(苗字)" %><br />
+    <%= f.text_field :last_name, autofocus: true, autocomplete: "last_name" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :first_name, "First name(名前)" %><br />
+    <%= f.text_field :first_name, autocomplete: "first_name" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :profile, "自己紹介(1,000文字まで)" %><br />
+    <%= f.text_area :profile, autofocus: true %>
+  </div>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autocomplete: "email" %>
+  </div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+    <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %></div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :password, "パスワード（変更）" %> <i>(パスワードを変更しない場合は空白にしておいてください)</i><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+    <% if @minimum_password_length %><em><%= @minimum_password_length %> 文字以上</em>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation, "パスワード（変更確認用）" %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :current_password, "パスワード" %> <i>(変更をする際は現在お使いのパスワードを入力してください)</i><br />
+    <%= f.password_field :current_password, autocomplete: "current-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Update" %>
+  </div>
+<% end %>
+
+<%#<h3>Cancel my account</h3>
+
+<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+
+<%= link_to "マイページに戻る", :back %>

@@ -1,0 +1,19 @@
+<h1>マイページ</h1>
+
+<h3>プロフィール画像</h3>
+<%= image_tag @user.avatar.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed if @user.avatar.attached? %>
+<%= image_tag '1907765.png', size: '150x80' unless @user.avatar.attached? %>
+<h3>ユーザー名</h3>
+<%= "#{@user.last_name}#{@user.first_name}" %>
+<% if @user.id == current_user.id %>
+  <h3>メールアドレス</h3>
+  <%= @user.email %>
+<% end %>
+<h3>プロフィール</h3>
+<%= @user.profile%><br />
+
+<% if @user.id == current_user.id %>
+  <%= link_to '編集', edit_user_registration_path(@user) %>
+<% end %>
+<%= link_to '戻る', :back %><br />
+<%= link_to 'トップページへ', root_path %>
