@@ -5,6 +5,7 @@ class Quest < ApplicationRecord
   validates :target,              presence: true
   validates :place_id,            presence: true
   validates :target_attribute_id, presence: true
+  validates :capacity,            presence: true
 
 
   belongs_to :place

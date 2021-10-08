@@ -1,5 +1,6 @@
 <h1>新規募集</h1>
 <%= form_with model: @quest, local: true do |q| %>
+<%= render 'layouts/error_messages', model: q.object %>
 
   <div>
     <%= q.label :title, 'タイトル' %><br />
@@ -9,6 +10,11 @@
   <div>
     <%= q.label :reward, '報酬形態' %><br />
     <%= q.text_field :reward %>
+  </div>
+
+  <div>
+    <%= q.label :capacity, '募集予定人数' %><br />
+    <%= q.number_field :capacity, min: 1, mx: 10 %>人
   </div>
 
   <div>

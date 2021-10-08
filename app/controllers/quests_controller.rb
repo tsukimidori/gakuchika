@@ -20,7 +20,7 @@ class QuestsController < ApplicationController
   private
 
   def quest_params
-    params.require(:quest).permit(:title, :reward, :date, :target, :point, :detail, :place_id, :target_attribute_id, :image).merge(user_id: current_user.id)
+    params.require(:quest).permit(:title, :reward, :date, :target, :point, :detail, :place_id, :target_attribute_id, :capacity, :image).merge(user_id: current_user.id)
   end
 
 end
