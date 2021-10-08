@@ -15,5 +15,7 @@
 <% if @user.id == current_user.id %>
   <%= link_to '編集', edit_user_registration_path(@user) %>
 <% end %>
-<%= link_to '戻る', :back %><br />
+<h3>ボランティア募集</h3>
+<%= link_to 'ボランティアを募集する', new_quest_path %>
+<%#= link_to '戻る', :back %><br />
 <%= link_to 'トップページへ', root_path %>

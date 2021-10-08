@@ -1,0 +1,59 @@
+<h1>新規募集</h1>
+<%= form_with model: @quest, local: true do |q| %>
+<%= render 'layouts/error_messages', model: q.object %>
+
+  <div>
+    <%= q.label :title, 'タイトル' %><br />
+    <%= q.text_field :title, autofocus: true %>
+  </div>
+
+  <div>
+    <%= q.label :reward, '報酬形態' %><br />
+    <%= q.text_field :reward %>
+  </div>
+
+  <div>
+    <%= q.label :capacity, '募集予定人数' %><br />
+    <%= q.number_field :capacity, min: 1, mx: 10 %>人
+  </div>
+
+  <div>
+    <%= q.label :date, '活動日' %><br />
+    <%= raw sprintf(q.date_select(:date, use_month_numbers: true, start_year: Time.now.year, date_separator: '%s'), '年', '月') + '日' %>
+  </div>
+
+  <div>
+    <%= q.label :target, '応募者資格' %><br />
+    <%= q.text_field :target %>
+  </div>
+
+  <div>
+    <%= q.label :point, 'アピールポイント' %><br />
+    <%= q.text_area :point %>
+  </div>
+
+  <div>
+    <%= q.label :place_id, '活動地域' %><br />
+    <%= q.collection_select(:place_id, Place.all, :id, :name) %>
+  </div>
+
+  <div>
+    <%= q.label :target_attribute_id, '応募対象者' %><br />
+    <%= q.collection_select(:target_attribute_id, TargetAttribute.all, :id, :name) %>
+  </div>
+
+  <div>
+    <%= q.label :detail, '募集詳細' %><br><em>募集の詳細を書いてね<br>・詳しい活動日時や活動内容<br>・応募資格の詳細 etc..<br />
+    <%= q.text_area :detail %>
+  </div>
+
+  <div>
+    <%= q.label :image, "イメージ画像" %><br />
+    <%= q.file_field :image %>
+  </div><br />
+
+  <div>
+    <%= q.submit '投稿する' %>
+  </div>
+
+<% end %>
