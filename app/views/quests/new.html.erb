@@ -14,7 +14,7 @@
 
   <div>
     <%= q.label :capacity, '募集予定人数' %><br />
-    <%= q.number_field :capacity, min: 1, mx: 10 %>人
+    <%= q.number_field :capacity, min: 1, max: 10 %>人
   </div>
 
   <div>
@@ -56,4 +56,6 @@
     <%= q.submit '投稿する' %>
   </div>
 
+  <%#= link_to '戻る', :back %><br />
+  <%= link_to 'トップページへ', root_path %>
 <% end %>
