@@ -8,8 +8,8 @@ class Quest < ApplicationRecord
   validates :capacity,            presence: true
 
 
-  belongs_to :place
-  belongs_to :target_attribute
+  belongs_to :place, :shortcuts => [:name]
+  belongs_to :target_attribute, :shortcuts => [:name]
   belongs_to :user
   has_one_attached :image
 end

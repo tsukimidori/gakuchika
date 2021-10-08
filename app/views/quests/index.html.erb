@@ -7,3 +7,15 @@
   <%= link_to '新規登録', new_user_registration_path %>
   <%= link_to 'ログイン', new_user_session_path %>
 <% end %>
+
+<div>
+  <% @quest.each do |quest| %>
+    <div>
+      <%= link_to "クエスト名：#{quest.title}", url: '#' %><br />
+      <%= "募集者：#{quest.user.last_name}#{quest.user.first_name}さん" %><br />
+      <%= "募集予定人数：#{quest.capacity}人" %><br />
+      <%= "活動予定日：#{l quest.date}" %><br />
+      <%= "活動地域：#{quest.place_name}" %>
+    </div>
+  <% end %>
+</div>
