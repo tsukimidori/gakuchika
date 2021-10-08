@@ -10,8 +10,12 @@
 
 <div>
   <% @quest.each do |quest| %>
+    <%= link_to quest_path(quest) do %>
+      <%= image_tag quest.image.variant(gravity: :center, resize:"160x160^", crop:"640x640+0+0").processed if quest.image.attached? %>
+      <%= image_tag '1907765.png', size: '150x80' unless quest.image.attached? %>
+    <% end %>
     <div>
-      <%= link_to "クエスト名：#{quest.title}", url: '#' %><br />
+      <%= link_to "クエスト名：#{quest.title}", quest_path(quest) %><br />
       <%= "募集者：#{quest.user.last_name}#{quest.user.first_name}さん" %><br />
       <%= "募集予定人数：#{quest.capacity}人" %><br />
       <%= "活動予定日：#{l quest.date}" %><br />

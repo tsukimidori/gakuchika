@@ -1,0 +1,41 @@
+<h1>募集要項</h1>
+
+<h3><%= @quest.title %></h3>
+<div>
+  <%= image_tag @quest.image.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed if @quest.image.attached? %>
+  <%= image_tag '1907765.png', size: '150x80' unless @quest.image.attached? %>
+</div>
+
+<h3>・基本情報</h3>
+<div>
+  <%= "募集者：#{@quest.user.last_name}#{@quest.user.first_name}さん" %><br />
+</div>
+<div>
+  <%= "募集予定人数：#{@quest.capacity}人" %><br />
+</div>
+<div>
+  <%= "活動予定日：#{l @quest.date}" %><br />
+</div>
+<div>
+  <%= "活動地域：#{@quest.place_name}" %><br />
+</div>
+<div>
+  <%= "応募対象者：#{@quest.target_attribute_name}" %><br />
+</div>
+<div>
+  <%= "応募資格：#{@quest.target}" %><br />
+</div>
+<div>
+  <%= "報酬：#{@quest.reward}" %><br />
+</div>
+<div>
+  アピールポイント：<p><%= raw(nl2br(@quest.point)) %></p><br />
+</div>
+
+<h3>・詳細情報</h3>
+<%= raw(nl2br(@quest.detail)) %><br />
+
+<div>
+<%= link_to '応募する', url:"#" %>
+<%= link_to 'トップページへ', root_path %>
+</div>

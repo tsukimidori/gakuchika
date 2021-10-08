@@ -18,6 +18,10 @@ class QuestsController < ApplicationController
     end
   end
 
+  def show
+    @quest = Quest.find(params[:id])
+  end
+
   private
 
   def quest_params

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_08_020148) do
+ActiveRecord::Schema.define(version: 2021_10_08_082043) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -38,7 +38,7 @@ ActiveRecord::Schema.define(version: 2021_10_08_020148) do
     t.string "reward"
     t.date "date", null: false
     t.string "target", null: false
-    t.string "point"
+    t.text "point"
     t.text "detail"
     t.integer "place_id", null: false
     t.integer "target_attribute_id", null: false
