@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :users, only: [:show]
   root to: 'quests#index'
   resources :quests do
-    resources :applies, only: [:index, :create, :desrroy]
-    resources :joins, only; [:index, :create, :desrroy]
+    resources :applies, only: [:index, :create, :destroy]
+    resources :joins, only: [:index, :create, :destroy]
   end
 end

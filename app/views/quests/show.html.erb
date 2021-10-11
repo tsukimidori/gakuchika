@@ -35,18 +35,23 @@
 <h3>・詳細情報</h3>
 <%= raw(nl2br(@quest.detail)) %><br />
 
-<% if current_user.id == @quest.user_id %>
+<% if user_signed_in? && current_user.id == @quest.user_id %>
   <div>
+    <%= link_to '承認待ち一覧へ', quest_applies_path(@quest) %>
     <%= link_to '編集する', edit_quest_path(@quest) %>
     <%= link_to '破棄する', quest_path(@quest), method: :delete %>
   </div>
 <% else %>
-  <div>
-    <%= link_to '応募する', url:"#" %>
-  </div>
+  <% if Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+      <%= link_to '参加取消', quest_join_path(@quest, @join), method: :delete %>
+  <% elsif current_user %>
+    <% if Apply.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+      <%= link_to '申請取消', quest_apply_path(@quest, @apply), method: :delete %>
+    <% else %>
+      <%= link_to '応募する', quest_applies_path(@quest), method: :post %>
+    <% end %>
+  <% end %>
 <% end %>
 
 
-<div>
   <%= link_to 'トップページへ', root_path %>
-</div>

@@ -1,0 +1,22 @@
+<h3>承認待ち一覧</h3>
+
+<% if @applies.exists? %>
+  <div>
+    <% @applies.each do |app| %>
+    <div>
+      <%= link_to user_path(app.user) do %>
+        <%= image_tag app.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed if app.user.avatar.attached? %>
+        <%= image_tag '1907765.png', size: '150x80' unless app.user.avatar.attached? %>
+      <% end %>
+      <%= link_to "#{app.user.last_name}#{app.user.first_name}さん", user_path(app.user) %><br />
+      <%= link_to '承認', quest_joins_path(app.quest, user_id: app.user.id, apply_id: app.id), method: :post %>
+      <%= link_to '却下', quest_apply_path(app.quest, app), method: :delete %>
+    </div>
+    <% end %>
+  </div>
+<% else %>
+  <P>現在承認待ちの方はいません。</p>
+<% end %>
+
+<%= link_to '戻る', :back %>
+<%= link_to 'トップページへ', root_path %>

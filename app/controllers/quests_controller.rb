@@ -20,6 +20,8 @@ class QuestsController < ApplicationController
   end
 
   def show
+    @apply = Apply.find_by(quest_id: @quest.id)
+    @join = Join.find_by(quest_id: @quest.id)
   end
 
   def edit
