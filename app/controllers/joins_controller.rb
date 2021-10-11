@@ -1,5 +1,9 @@
 class JoinsController < ApplicationController
 
+  def index
+    @joins = Join.where(quest_id: params[:quest_id]).includes(:user)
+  end
+
   def create
     @join = Join.create(quest_id: join_params[:quest_id], user_id: join_params[:user_id])
     Apply.find(join_params[:apply_id]).destroy!

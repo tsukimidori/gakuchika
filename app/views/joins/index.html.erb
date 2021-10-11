@@ -1,0 +1,19 @@
+<h3>参加者一覧</h3>
+
+<% if @joins.exists? %>
+  <div>
+    <% @joins.each do |join| %>
+      <div>
+        <%= link_to user_path(join.user) do %>
+          <%= image_tag join.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed if join.user.avatar.attached? %>
+          <%= image_tag '1907765.png', size: '150x80' unless join.user.avatar.attached? %>
+        <% end %>
+        <%= link_to "#{join.user.last_name}#{join.user.first_name}さん", user_path(join.user) %><br />
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <P>参加者はいません</p>
+<% end %>
+
+<%= link_to '戻る', :back %>
