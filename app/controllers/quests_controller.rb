@@ -3,7 +3,7 @@ class QuestsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-    @quest = Quest.includes(:user)
+    @quest = Quest.includes(:user).order(id: "DESC")
   end
 
   def new
@@ -20,6 +20,8 @@ class QuestsController < ApplicationController
   end
 
   def show
+    @apply = Apply.find_by(quest_id: @quest.id)
+    @join = Join.find_by(quest_id: @quest.id)
   end
 
   def edit

@@ -19,7 +19,8 @@
       <%= "募集者：#{quest.user.last_name}#{quest.user.first_name}さん" %><br />
       <%= "募集予定人数：#{quest.capacity}人" %><br />
       <%= "活動予定日：#{l quest.date}" %><br />
-      <%= "活動地域：#{quest.place_name}" %>
+      <%= "活動地域：#{quest.place_name}" %><br />
+      <%= link_to "現在の参加予定人数：#{quest.joins.count}人", quest_joins_path(quest)%>
     </div>
   <% end %>
 </div>
