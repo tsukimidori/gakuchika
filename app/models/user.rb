@@ -7,4 +7,6 @@ class User < ApplicationRecord
   validates :first_name, presence: true
   validates :profile, length: { maximum: 1000 }
   has_one_attached :avatar
+  has_many :applies
+  has_many :joins
 end
