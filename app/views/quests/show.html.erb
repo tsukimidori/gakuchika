@@ -35,6 +35,41 @@
 <h3>・詳細情報</h3>
 <%= raw(nl2br(@quest.detail)) %><br />
 
+<h3>評価一覧</h3>
+<% if Message.exists?(quest_id: @quest.id)%>
+  <% if user_signed_in? && current_user.id == @quest.user_id %>
+    <% @messages.each do |message| %>
+      <%= "#{message.message}：#{message.user.last_name}#{message.user.first_name}さん" %>
+    <% end %>
+  <% elsif user_signed_in? && current_user.id != @quest.user_id %>
+    <%= "さん" %><br />
+  <% end %>
+<% else %>
+  評価はまだありません。<br />
+<% end %>
+
+<% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+  <h3>評価する</h3>
+  <% if current_user.id != @quest.user_id %>
+    <%= form_with model: [@quest, @message], local: true do |f| %>
+      <%= f.label :message, 'メッセージ' %><br/>
+      <%= f.text_area :message, autofocus: true %><br />
+      <div id="rating-form">
+        <%= f.hidden_field :like %>
+      </div>
+      <script>
+        $('#rating-form').raty({
+            starOn: "<%= asset_path('star-on.png') %>",
+            starOff: "<%= asset_path('star-off.png') %>",
+            scoreName: 'message[like]'
+        });
+      </script>
+      <%= f.submit '送信する' %>
+    <% end %>
+  <% end %>
+<% end %>
+
+
 <% if user_signed_in? && current_user.id == @quest.user_id %>
   <div>
     <%= link_to '承認待ち一覧へ', quest_applies_path(@quest) %>

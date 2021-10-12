@@ -5,5 +5,6 @@ Rails.application.routes.draw do
   resources :quests do
     resources :applies, only: [:index, :create, :destroy]
     resources :joins, only: [:index, :create, :destroy]
+    resources :messages, only: [:create]
   end
 end
