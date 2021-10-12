@@ -14,8 +14,27 @@
 
 <% if @user.id == current_user.id %>
   <%= link_to '編集', edit_user_registration_path(@user) %>
+  <h3>ボランティア募集</h3>
+  <%= link_to 'ボランティアを募集する', new_quest_path %><br />
 <% end %>
-<h3>ボランティア募集</h3>
-<%= link_to 'ボランティアを募集する', new_quest_path %>
+<h2>実績</h2>
+<h3>参加実績</h3>
+<% if @joins.exists? %>
+  <% @joins.each do |join| %>
+    <%= link_to quest_path(join.quest) do%>
+      <%= join.quest.title %><br />
+    <% end %>
+    <%= "活動日：#{l join.quest.date}"%><br />
+  <% end %>
+<% end %>
+<h3>募集実績</h3>
+<% if @quests.exists? %>
+  <% @quests.each do |quest| %>
+    <%= link_to quest_path(quest) do%>
+      <%= quest.title %><br />
+    <% end %>
+    <%= "活動日：#{l quest.date}"%><br />
+  <% end %>
+<% end %>
 <%#= link_to '戻る', :back %><br />
 <%= link_to 'トップページへ', root_path %>
