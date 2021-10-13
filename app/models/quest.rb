@@ -6,6 +6,7 @@ class Quest < ApplicationRecord
   has_one_attached :image
   has_many :applies
   has_many :joins
+  has_many :messages
 
   validates :title,               presence: true
   validates :date,                presence: true

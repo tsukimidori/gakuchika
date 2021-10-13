@@ -22,6 +22,9 @@ class QuestsController < ApplicationController
   def show
     @apply = Apply.find_by(quest_id: @quest.id)
     @join = Join.find_by(quest_id: @quest.id)
+    @joins = Join.where(quest_id: @quest.id)
+    @messages = @quest.messages
+    @message = Message.new
   end
 
   def edit

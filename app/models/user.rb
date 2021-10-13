@@ -9,4 +9,5 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :applies
   has_many :joins
+  has_many :messages
 end
