@@ -43,7 +43,14 @@
       <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
     <% end %>
   <% elsif user_signed_in? && current_user.id != @quest.user_id %>
-    <%= "さん" %><br />
+    <% if @messages.exists?(user_id: @quest.user_id) %>
+      <%= "To：#{current_user.last_name}#{current_user.first_name}さん"%><br />
+      <%= "#{Message.find_by(quest_id: @quest.id, user_id: @quest.user_id).message}（#{@quest.user.last_name}#{@quest.user.first_name}＠募集者さん）" %><br />
+    <% end %>
+    <% if @messages.exists?(user_id: current_user.id) %>
+      <%= "To：#{@quest.user.last_name}#{@quest.user.first_name}さん"%><br />
+      <%= "#{Message.find_by(quest_id: @quest.id, user_id: current_user.id).message}（#{current_user.last_name}#{current_user.first_name}さん）" %><br />
+    <% end %>
   <% end %>
 <% else %>
   評価はまだありません。<br />
@@ -53,21 +60,25 @@
   <h3>評価する</h3>
   <%= form_with model: [@quest, @message], local: true do |f| %>
     <% if current_user.id != @quest.user_id %>
-      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
-      <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
-      <%= f.label :message, 'メッセージ' %><br/>
-      <%= f.text_area :message, autofocus: true %><br />
-      <div id="rating-form">
-        <%= f.hidden_field :like %>
-      </div>
-      <script>
-        $('#rating-form').raty({
-            starOn: "<%= asset_path('star-on.png') %>",
-            starOff: "<%= asset_path('star-off.png') %>",
-            scoreName: 'message[like]'
-        });
-      </script>
-      <%= f.submit '送信する' %>
+      <% if @messages.exists?(user_id: current_user.id) %>
+        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
+      <% else %>
+        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
+        <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
+        <%= f.label :message, 'メッセージ' %><br/>
+        <%= f.text_area :message, autofocus: true %><br />
+        <div id="rating-form">
+          <%= f.hidden_field :like %>
+        </div>
+        <script>
+          $('#rating-form').raty({
+              starOn: "<%= asset_path('star-on.png') %>",
+              starOff: "<%= asset_path('star-off.png') %>",
+              scoreName: 'message[like]'
+          });
+        </script>
+        <%= f.submit '送信する' %>
+      <% end %>
     <% else %>
       <select name="message[sending_party_id]">
         <option value="">評価相手を選択してください</option>
@@ -105,7 +116,9 @@
   </div>
 <% else %>
   <% if Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+    <% unless @messages.exists?(sending_party_id: current_user.id) || @messages.exists?(user_id: current_user.id) %>
       <%= link_to '参加取消', quest_join_path(@quest, @join), method: :delete %>
+    <% end %>
   <% elsif current_user %>
     <% if Apply.exists?(quest_id: @quest.id, user_id: current_user.id) %>
       <%= link_to '申請取消', quest_apply_path(@quest, @apply), method: :delete %>
