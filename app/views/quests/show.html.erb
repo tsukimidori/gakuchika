@@ -39,7 +39,8 @@
 <% if Message.exists?(quest_id: @quest.id)%>
   <% if user_signed_in? && current_user.id == @quest.user_id %>
     <% @messages.each do |message| %>
-      <%= "#{message.message}：#{message.user.last_name}#{message.user.first_name}さん" %>
+      <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
+      <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
     <% end %>
   <% elsif user_signed_in? && current_user.id != @quest.user_id %>
     <%= "さん" %><br />
@@ -50,8 +51,34 @@
 
 <% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
   <h3>評価する</h3>
-  <% if current_user.id != @quest.user_id %>
-    <%= form_with model: [@quest, @message], local: true do |f| %>
+  <%= form_with model: [@quest, @message], local: true do |f| %>
+    <% if current_user.id != @quest.user_id %>
+      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
+      <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
+      <%= f.label :message, 'メッセージ' %><br/>
+      <%= f.text_area :message, autofocus: true %><br />
+      <div id="rating-form">
+        <%= f.hidden_field :like %>
+      </div>
+      <script>
+        $('#rating-form').raty({
+            starOn: "<%= asset_path('star-on.png') %>",
+            starOff: "<%= asset_path('star-off.png') %>",
+            scoreName: 'message[like]'
+        });
+      </script>
+      <%= f.submit '送信する' %>
+    <% else %>
+      <select name="message[sending_party_id]">
+        <option value="">評価相手を選択してください</option>
+        <% @joins.each do |join| %>
+          <% if @messages.exists?(sending_party_id: join.user_id) %>
+            <option value=<%= join.user_id %> disabled><%= "#{join.user.last_name}#{join.user.first_name}さん（評価済み）" %></option>
+          <% else %>
+            <option value=<%= join.user_id %>><%= "#{join.user.last_name}#{join.user.first_name}さん" %></option>
+          <% end %>
+        <% end %>
+      </select><br />
       <%= f.label :message, 'メッセージ' %><br/>
       <%= f.text_area :message, autofocus: true %><br />
       <div id="rating-form">
@@ -89,4 +116,4 @@
 <% end %>
 
 
-  <%= link_to 'トップページへ', root_path %>
+<%= link_to 'トップページへ', root_path %>

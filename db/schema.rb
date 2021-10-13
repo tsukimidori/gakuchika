@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_075707) do
   create_table "messages", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.text "message", null: false
     t.float "like", null: false
+    t.integer "sending_party_id", null: false
     t.bigint "user_id", null: false
     t.bigint "quest_id", null: false
     t.datetime "created_at", precision: 6, null: false

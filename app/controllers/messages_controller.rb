@@ -4,7 +4,6 @@ class MessagesController < ApplicationController
     quest = Quest.find(params[:quest_id])
     message = quest.messages.build(message_params)
     message.user_id = current_user.id
-    binding.pry
     if message.save
       flash[:success] = "コメントしました"
       redirect_back(fallback_location: root_path)
@@ -16,6 +15,6 @@ class MessagesController < ApplicationController
 
   private
   def message_params
-    params.require(:message).permit(:message, :like)
+    params.require(:message).permit(:message, :like, :sending_party_id)
   end
 end
