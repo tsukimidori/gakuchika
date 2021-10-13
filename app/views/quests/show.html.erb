@@ -37,19 +37,28 @@
 
 <h3>評価一覧</h3>
 <% if Message.exists?(quest_id: @quest.id)%>
-  <% if user_signed_in? && current_user.id == @quest.user_id %>
+  <% if user_signed_in? && @joins.exists?(user_id: current_user.id) %>
+    <% if current_user.id == @quest.user_id %>
+      <% @messages.each do |message| %>
+        <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
+        <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
+      <% end %>
+    <% elsif current_user.id != @quest.user_id %>
+      <% if @messages.exists?(user_id: @quest.user_id, sending_party_id: current_user.id) %>
+        <%= "To：#{current_user.last_name}#{current_user.first_name}さん"%><br />
+        <%= "#{Message.find_by(quest_id: @quest.id, user_id: @quest.user_id).message}（#{@quest.user.last_name}#{@quest.user.first_name}＠募集者さん）" %><br />
+      <% else %>
+        <%= "#{current_user.last_name}#{current_user.first_name}さん宛のメッセージはありません"%><br />
+      <% end %>
+      <% if @messages.exists?(user_id: current_user.id) %>
+        <%= "To：#{@quest.user.last_name}#{@quest.user.first_name}さん"%><br />
+        <%= "#{Message.find_by(quest_id: @quest.id, user_id: current_user.id).message}（#{current_user.last_name}#{current_user.first_name}さん）" %><br />
+      <% end %>
+    <% end %>
+  <% else %>
     <% @messages.each do |message| %>
       <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
-      <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
-    <% end %>
-  <% elsif user_signed_in? && current_user.id != @quest.user_id %>
-    <% if @messages.exists?(user_id: @quest.user_id) %>
-      <%= "To：#{current_user.last_name}#{current_user.first_name}さん"%><br />
-      <%= "#{Message.find_by(quest_id: @quest.id, user_id: @quest.user_id).message}（#{@quest.user.last_name}#{@quest.user.first_name}＠募集者さん）" %><br />
-    <% end %>
-    <% if @messages.exists?(user_id: current_user.id) %>
-      <%= "To：#{@quest.user.last_name}#{@quest.user.first_name}さん"%><br />
-      <%= "#{Message.find_by(quest_id: @quest.id, user_id: current_user.id).message}（#{current_user.last_name}#{current_user.first_name}さん）" %><br />
+      <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %><br />
     <% end %>
   <% end %>
 <% else %>
