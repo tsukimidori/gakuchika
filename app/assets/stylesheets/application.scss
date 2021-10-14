@@ -11,5 +11,16 @@
  * It is generally better to create a new file per style scope.
  *
  *= require_tree .
+ *= require material_icons
  *= require_self
  */
+ @import 'materialize';
+
+
+ .close-icon {
+  font-size: 2.5rem;
+  right: 1rem;
+  margin: 1rem auto;
+  color: rgb(66, 66, 66);
+  padding-left: 17rem;
+ }
