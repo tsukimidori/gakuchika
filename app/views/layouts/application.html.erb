@@ -12,27 +12,35 @@
 
   <body>
     <header>
-      <div class="navbar-fixed">
+      <div class="navbar-fixed z-depth-3">
         <nav class="nav-wrapper">
           <div class="container">
             <a href="/" class="brand-logo left">Logo</a>
-            <a href="#" data-target="mobile-links" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a data-target="mobile-links" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
             <div class="menu">
               <ul class="right hide-on-med-and-down">
-                <li><a href="#">Sass</a></li>
-                <li><a href="#">Components</a></li>
-                <li><a href="#">JavaScript</a></li>
+                <% if user_signed_in? %>
+                  <li><%= link_to 'マイページ', user_path(current_user) %></li>
+                  <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+                <% else %>
+                  <li><%= link_to '新規登録', new_user_registration_path %></li>
+                  <li><%= link_to 'ログイン', new_user_session_path %></li>
+                <% end %>
               </ul>
             </div>
           </div>
         </nav>
       </div>
       <ul class="sidenav" id="mobile-links">
-        <a href="#" class="sidenav-close " data-target="mobile-links"><i class="material-icons close-icon">close</i></a>
+        <a class="sidenav-close " data-target="mobile-links"><i class="material-icons close-icon">close</i></a>
         <div class="menu">
-          <li><a href="#">Sass</a></li>
-          <li><a href="#">Components</a></li>
-          <li><a href="#">JavaScript</a></li>
+          <% if user_signed_in? %>
+            <li><%= link_to 'マイページ', user_path(current_user) %></li>
+            <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li><%= link_to '新規登録', new_user_registration_path %></li>
+            <li><%= link_to 'ログイン', new_user_session_path %></li>
+          <% end %>
         </div>
       </ul>
     </header>
@@ -66,13 +74,14 @@
         </div>
       </div>
     </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-       $(document).ready(function () {
-        $('.sidenav').sidenav({
-          edge: 'right'
-        });
-       })
+      const sidenav = document.querySelector('.sidenav');
+      $(document).ready(function () {
+       $('.sidenav').sidenav({
+         edge: 'right'
+       });
+      })
     </script>
   </body>
 </html>

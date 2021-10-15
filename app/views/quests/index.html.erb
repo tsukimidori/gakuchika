@@ -2,15 +2,13 @@
   <div class="section no-pad-bot">
     <div class="container">
       <br><br>
-      <h1 class="header center teal-text text-lighten-2">＃ガクチカ！</h1>
+      <h1 class="header center teal-text text-lighten-2 ">＃ガクチカ！</h1>
       <div class="row center">
         <h5 class="header col s12 light">A modern responsive front-end framework based on Material Design</h5>
       </div>
       <div class="row center">
         <% if user_signed_in? %>
           <%= "ようこそ！ #{current_user.last_name}#{current_user.first_name}さん" %><br />
-          <%= link_to 'マイページ', user_path(current_user) %>
-          <%= link_to 'ログアウト', destroy_user_session_path, method: :delete %>
         <% else %>
           <%= link_to '新規登録', new_user_registration_path %>
           <%= link_to 'ログイン', new_user_session_path %>
@@ -19,11 +17,11 @@
       <br><br>
     </div>
   </div>
-  <div class="parallax"><img src="/assets/images/pastel_00001.jpg" alt="Unsplashed background img 1"></div>
+  <div class="parallax"><img src="/assets/pastel_00001.jpeg" alt="Unsplashed background img 1"></div>
 </div>
 
 
-<div class="container brown lighten-2" style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+<div class="container brown lighten-2 z-depth-5" style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
   <div class="row">
     <div class="flexbox">
       <% @quest.each do |quest| %>
@@ -65,3 +63,8 @@
     </div>
   </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+    const para = document.querySelector('.parallax');
+    M.Parallax.init(para,{});
+</script>
