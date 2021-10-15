@@ -14,18 +14,19 @@
  *= require material_icons
  *= require_self
  */
+ @import "materialize/components/color-variables";
+ $primary-color: color("blue", "lighten-2") !default;
+ $secondary-color: color("amber", "darken-4") !default;
  @import 'materialize';
+ @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP&family=Sawarabi+Gothic&display=swap');
 
-
+ * {
+  font-family: 'Noto Sans JP', sans-serif;
+ }
  .close-icon {
   font-size: 2.5rem;
   right: 1rem;
   margin: 1rem auto;
   color: rgb(66, 66, 66);
   padding-left: 17rem;
- }
- .flexbox {
-  display: flex;
-  justify-content: space-around;
-  align-items: top;
  }
