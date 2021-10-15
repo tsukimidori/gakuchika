@@ -89,7 +89,7 @@
         <%= f.submit '送信する' %>
       <% end %>
     <% else %>
-      <select name="message[sending_party_id]">
+      <select name="message[sending_party_id]" class="browser-default">
         <option value="">評価相手を選択してください</option>
         <% @joins.each do |join| %>
           <% if @messages.exists?(sending_party_id: join.user_id) %>
