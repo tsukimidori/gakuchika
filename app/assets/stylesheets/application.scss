@@ -24,3 +24,9 @@
   color: rgb(66, 66, 66);
   padding-left: 17rem;
  }
+ .flexbox {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: top;
+ }
