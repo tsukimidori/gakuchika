@@ -5,9 +5,9 @@
       <h3 class="header center">募集要項</h3>
       <br><br>
       <div class="row col s12">
-        <div class="row center-align">
-          <%= image_tag @quest.image.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed, class: 'col s12 m12 l12' if @quest.image.attached? %>
-          <%= image_tag '1907765.png', size: '150x80', class: 'col s12 m12 l12' unless @quest.image.attached? %>
+        <div class="row col s12 m12 l12 center-align">
+          <%= image_tag @quest.image.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed, class: 'responsive-img' if @quest.image.attached? %>
+          <%= image_tag '1907765.png', class: 'responsive-img' unless @quest.image.attached? %>
           <h4 class="header"><%= @quest.title %></h4>
         </div>
 
@@ -23,7 +23,7 @@
 
         <div class="row">
           <div id="basic">
-            <div class="row">
+            <div class="row col s12 m12 l12">
               <div class="col s12 m6 l3">
                 <%= "募集者：#{@quest.user.last_name}#{@quest.user.first_name}さん" %>
               </div>
@@ -54,20 +54,17 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row col s12 m12 l12">
           <div id="detail">
-            <div class="row">
               <div class="col s12">
                 <%= raw(nl2br(@quest.detail)) %>
               </div>
-            </div>
           </div>
         </div>
 
-        <div class="row">
+        <div class="row col s12 m12 l12">
           <div id="evaluation">
-            <div class="row">
-              <div class="col s12 m6 l3">
+            <div class="row col s12 m12 l12">
                 <h5>評価一覧</h5>
                 <% if Message.exists?(quest_id: @quest.id)%>
                   <% if user_signed_in? && @joins.exists?(user_id: current_user.id) %>
@@ -97,53 +94,22 @@
                 <% else %>
                   評価はまだありません。<br />
                 <% end %>
-              </div>
             </div>
 
-            <div class="row">
-              <div class="col s12">
-                <% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
-                  <h5>評価する</h5>
-                  <%= form_with model: [@quest, @message], local: true do |f| %>
-                    <% if current_user.id != @quest.user_id %>
-                      <% if @messages.exists?(user_id: current_user.id) %>
-                        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
-                      <% else %>
-                        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
-                        <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
-                        <%= f.label :message, 'メッセージ' %><br/>
-                        <%= f.text_area :message, autofocus: true %><br />
-                        <div id="rating-form">
-                          <%= f.hidden_field :like %>
-                        </div>
-                        <script>
-                          $('#rating-form').raty({
-                              starOn: "<%= asset_path('star-on.png') %>",
-                              starOff: "<%= asset_path('star-off.png') %>",
-                              scoreName: 'message[like]'
-                          });
-                        </script>
-                        <%= f.submit '送信する' %>
-                      <% end %>
+            <div class="col col s12 m12 l12">
+              <% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+                <h5>評価する</h5>
+                <%= form_with model: [@quest, @message], local: true do |f| %>
+                  <% if current_user.id != @quest.user_id %>
+                    <% if @messages.exists?(user_id: current_user.id) %>
+                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
                     <% else %>
-                      <div class="row input-field col s12">
-                        <select name="message[sending_party_id]" class="register browser-default" style="border: 1px solid #90a4ae;">
-                          <option value="" disabled selected>評価相手を選択してください</option>
-                          <% @joins.each do |join| %>
-                            <% if @messages.exists?(sending_party_id: join.user_id) %>
-                              <option value=<%= join.user_id %> disabled><%= "#{join.user.last_name}#{join.user.first_name}さん（評価済み）" %></option>
-                            <% else %>
-                              <option value=<%= join.user_id %>><%= "#{join.user.last_name}#{join.user.first_name}さん" %></option>
-                            <% end %>
-                          <% end %>
-                        </select>
-                      </div>
-                      <div class="row input-field col s12" style="margin-left: 20px;">
-                        <%= f.label :message, 'メッセージ' %>
-                        <%= f.text_area :message, autofocus: true, class: 'materialize-textarea' %><br />
-                        <div id="rating-form">
-                          <%= f.hidden_field :like %>
-                        </div>
+                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
+                      <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
+                      <%= f.label :message, 'メッセージ' %><br/>
+                      <%= f.text_area :message, autofocus: true %><br />
+                      <div id="rating-form">
+                        <%= f.hidden_field :like %>
                       </div>
                       <script>
                         $('#rating-form').raty({
@@ -152,15 +118,43 @@
                             scoreName: 'message[like]'
                         });
                       </script>
-                      <div class="row">
-                        <div class="actions right-align">
-                          <button class="btn waves-effect waves-light"><%= f.submit '送信する' %><i class="material-icons" style="vertical-align: -4px;">mail_outline</i></button>
-                        </div>
-                      </div>
+                      <%= f.submit '送信する' %>
                     <% end %>
+                  <% else %>
+                    <div class="row input-field col s12">
+                      <select name="message[sending_party_id]" class="register browser-default" style="border: 1px solid #90a4ae;">
+                        <option value="" disabled selected>評価相手を選択してください</option>
+                        <% @joins.each do |join| %>
+                          <% if @messages.exists?(sending_party_id: join.user_id) %>
+                            <option value=<%= join.user_id %> disabled><%= "#{join.user.last_name}#{join.user.first_name}さん（評価済み）" %></option>
+                          <% else %>
+                            <option value=<%= join.user_id %>><%= "#{join.user.last_name}#{join.user.first_name}さん" %></option>
+                          <% end %>
+                        <% end %>
+                      </select>
+                    </div>
+                    <div class="row input-field col s12" style="margin-left: 20px;">
+                      <%= f.label :message, 'メッセージ' %>
+                      <%= f.text_area :message, autofocus: true, class: 'materialize-textarea' %><br />
+                      <div id="rating-form">
+                        <%= f.hidden_field :like %>
+                      </div>
+                    </div>
+                    <script>
+                      $('#rating-form').raty({
+                          starOn: "<%= asset_path('star-on.png') %>",
+                          starOff: "<%= asset_path('star-off.png') %>",
+                          scoreName: 'message[like]'
+                      });
+                    </script>
+                    <div class="row">
+                      <div class="actions right-align">
+                        <button class="btn waves-effect waves-light"><%= f.submit '送信する' %><i class="material-icons" style="vertical-align: -4px;">mail_outline</i></button>
+                      </div>
+                    </div>
                   <% end %>
                 <% end %>
-              </div>
+              <% end %>
             </div>
           </div>
         </div>
