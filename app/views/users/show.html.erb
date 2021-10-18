@@ -4,15 +4,15 @@
       <br>
       <h3 class="header center">マイページ</h3>
       <br><br>
-      <div class="row">
+      <div class="row z-depth-3">
         <div class="col s12 m12 l12">
           <ul class="tabs tabs-transparent">
-            <li class="tab col s6 m6 l6"><a class="active" href="#basic">基本情報</a></li>
-            <li class="tab col s6 m6 l6"><a href="#achievement">実績</a></li>
+            <li class="tab col s6 m6 l6"><a class="active brown-text text-darken-4" href="#basic">基本情報</a></li>
+            <li class="tab col s6 m6 l6"><a class="brown-text text-darken-4" href="#achievement">実績</a></li>
           </ul>
         </div>
       </div>
-      <div class="row">
+      <div class="row z-depth-1 hoverable">
         <div id="basic">
           <div class="flex">
             <div class="row user-frame" style="margin-left: 70px;">
@@ -60,33 +60,33 @@
           <div class="row">
             <div id="achievement">
               <div class="flex">
-                <div class="row user-frame" style="margin-left: 70px;">
-                  <div class="col s6 m6 l6" style="margin: 2px;">
-                    <%#<% @score.each do |score| %>
-                      <%#<% case score %>
-                      <%#<% when score >= 100 %>
-                        <%#<img src="/assets/award_S.png">
-                      <% when score < 100 && score >= 80 %>
-                        <%#<img src="/assets/award_A.png">
-                      <% when score < 80 && score >= 60 %>
-                        <%#<img src="/assets/award_B.png">
-                      <% when score < 60 && score >= 40 %>
-                        <%#<img src="/assets/award_C.png">
-                      <% when score < 40 %>
-                        <%#<img src="/assets/award_D.png">
+                <div class="row" style="margin: 30px 0 0 0;">
+                  <div class="col s4 m4 l4">
+                    <% @score.values.each do |score| %>
+                      <% if score >= 20 %>
+                        <img src="/assets/award_S.png">
+                      <% elsif score < 20 && score >= 15 %>
+                        <img src="/assets/award_A.png">
+                      <% elsif score < 15 && score >= 10 %>
+                        <img src="/assets/award_B.png">
+                      <% elsif score < 10 && score >= 5 %>
+                        <img src="/assets/award_C.png">
+                      <% elsif score < 5 %>
+                        <img src="/assets/award_D.png">
                       <% end %>
-                    <%#<% end %>
+                    <% end %>
                   </div>
                 </div>
+                <div class="row"></div>
                 <div class="row">
                   <div class="col s8 offset-s3">
                     <h5>参加実績</h5>
                     <% if @joins.exists? %>
                       <% @joins.each do |join| %>
                         <%= link_to quest_path(join.quest) do%>
-                          <%= join.quest.title %><br />
+                          <p><%= join.quest.title %></p>
                         <% end %>
-                        <%= "活動日：#{l join.quest.date}"%>
+                        <p><%= "活動日：#{l join.quest.date}"%></p>
                       <% end %>
                     <% else %>
                       <p>参加実績はありません</p>
@@ -97,9 +97,9 @@
                     <% if @quests.exists? %>
                       <% @quests.each do |quest| %>
                         <%= link_to quest_path(quest) do%>
-                          <%= quest.title %><br />
+                          <p><%= quest.title %></p>
                         <% end %>
-                        <%= "活動日：#{l quest.date}"%><br />
+                        <p><%= "活動日：#{l quest.date}"%></p>
                       <% end %>
                     <% else %>
                       <p>募集実績はありません</p>
@@ -111,6 +111,7 @@
           </div>
         </div>
       </div>
+      <br><br>
     </div>
   </div>
 </div>
