@@ -12,27 +12,35 @@
 
   <body>
     <header>
-      <div class="navbar-fixed">
+      <div class="navbar-fixed z-depth-3">
         <nav class="nav-wrapper">
           <div class="container">
             <a href="/" class="brand-logo left">Logo</a>
-            <a href="#" data-target="mobile-links" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
+            <a data-target="mobile-links" class="right sidenav-trigger"><i class="material-icons">menu</i></a>
             <div class="menu">
               <ul class="right hide-on-med-and-down">
-                <li><a href="#">Sass</a></li>
-                <li><a href="#">Components</a></li>
-                <li><a href="#">JavaScript</a></li>
+                <% if user_signed_in? %>
+                  <li><%= link_to 'マイページ', user_path(current_user) %></li>
+                  <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+                <% else %>
+                  <li><%= link_to '新規登録', new_user_registration_path %></li>
+                  <li><%= link_to 'ログイン', new_user_session_path %></li>
+                <% end %>
               </ul>
             </div>
           </div>
         </nav>
       </div>
       <ul class="sidenav" id="mobile-links">
-        <a href="#" class="sidenav-close " data-target="mobile-links"><i class="material-icons close-icon">close</i></a>
+        <a class="sidenav-close " data-target="mobile-links"><i class="material-icons close-icon">close</i></a>
         <div class="menu">
-          <li><a href="#">Sass</a></li>
-          <li><a href="#">Components</a></li>
-          <li><a href="#">JavaScript</a></li>
+          <% if user_signed_in? %>
+            <li><%= link_to 'マイページ', user_path(current_user) %></li>
+            <li><%= link_to 'ログアウト', destroy_user_session_path, method: :delete %></li>
+          <% else %>
+            <li><%= link_to '新規登録', new_user_registration_path %></li>
+            <li><%= link_to 'ログイン', new_user_session_path %></li>
+          <% end %>
         </div>
       </ul>
     </header>
@@ -42,37 +50,21 @@
     </main>
 
     <footer class="page-footer">
-      <div class="container">
-        <div class="row">
-          <div class="col l6 s12">
-            <h5 class="white-text">Footer Content</h5>
-            <p class="grey-text text-lighten-4">You can use rows and columns here to organize your footer content.</p>
-          </div>
-          <div class="col l4 offset-l2 s12">
-            <h5 class="white-text">Links</h5>
-            <ul>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 1</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
-              <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="footer-copyright">
-        <div class="container">
-        © 2014 Copyright Text
+      <div class="footer-copyright" style="background-color: #64B5F6;">
+        <div class="container flex">
+        <p>© 2014 Copyright Text</p>
         <a class="grey-text text-lighten-4 right" href="#!">More Links</a>
         </div>
       </div>
     </footer>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
-       $(document).ready(function () {
-        $('.sidenav').sidenav({
-          edge: 'right'
-        });
-       })
+      const sidenav = document.querySelector('.sidenav');
+      $(document).ready(function () {
+       $('.sidenav').sidenav({
+         edge: 'right'
+       });
+      })
     </script>
   </body>
 </html>

@@ -1,40 +1,123 @@
-<h1>マイページ</h1>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">マイページ</h3>
+      <br><br>
+      <div class="row z-depth-3">
+        <div class="col s12 m12 l12">
+          <ul class="tabs tabs-transparent">
+            <li class="tab col s6 m6 l6"><a class="active brown-text text-darken-4" href="#basic">基本情報</a></li>
+            <li class="tab col s6 m6 l6"><a class="brown-text text-darken-4" href="#achievement">実績</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="row z-depth-1 hoverable">
+        <div id="basic">
+          <div class="flex">
+            <div class="row user-frame" style="margin-left: 70px;">
+              <div class="col s6 m6 l6" style="margin: 2px;">
+                <%= image_tag @user.avatar.variant(gravity: :center, resize:"270x200", crop:"630x420+0+0").processed if @user.avatar.attached? %>
+                <%= image_tag '1907765.png', size: '150x80' unless @user.avatar.attached? %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s8 offset-s3">
+                <h5>ユーザー名</h5>
+                <%= "#{@user.last_name}#{@user.first_name}" %>
+              </div>
+              <div class="col s8 offset-s3">
+                <% if @user.id == current_user.id %>
+                  <h5>メールアドレス</h5>
+                  <%= @user.email %>
+                <% end %>
+              </div>
+              <div class="col s8 offset-s3">
+                <h5>プロフィール</h5>
+                <%= @user.profile%>
+              </div>
+            </div>
+          </div>
+          <% if @user.id == current_user.id %>
+            <div class="row right" style="margin: 20px;">
+              <%= link_to edit_user_registration_path(@user) do %>
+                <p class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></p>
+              <% end %>
+            </div>
+          <% end %>
+          <div class="container">
+            <div class="row">
+              <% if @user.id == current_user.id %>
+                <%= link_to new_quest_path do %>
+                  <p class="btn waves-effect waves-light">ボランティアを募集する<i class="material-icons" style="vertical-align: -4px;">note_add</i></p>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
 
-<h3>プロフィール画像</h3>
-<%= image_tag @user.avatar.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed if @user.avatar.attached? %>
-<%= image_tag '1907765.png', size: '150x80' unless @user.avatar.attached? %>
-<h3>ユーザー名</h3>
-<%= "#{@user.last_name}#{@user.first_name}" %>
-<% if @user.id == current_user.id %>
-  <h3>メールアドレス</h3>
-  <%= @user.email %>
-<% end %>
-<h3>プロフィール</h3>
-<%= @user.profile%><br />
-
-<% if @user.id == current_user.id %>
-  <%= link_to '編集', edit_user_registration_path(@user) %>
-  <h3>ボランティア募集</h3>
-  <%= link_to 'ボランティアを募集する', new_quest_path %><br />
-<% end %>
-<h2>実績</h2>
-<h3>参加実績</h3>
-<% if @joins.exists? %>
-  <% @joins.each do |join| %>
-    <%= link_to quest_path(join.quest) do%>
-      <%= join.quest.title %><br />
-    <% end %>
-    <%= "活動日：#{l join.quest.date}"%><br />
-  <% end %>
-<% end %>
-<h3>募集実績</h3>
-<% if @quests.exists? %>
-  <% @quests.each do |quest| %>
-    <%= link_to quest_path(quest) do%>
-      <%= quest.title %><br />
-    <% end %>
-    <%= "活動日：#{l quest.date}"%><br />
-  <% end %>
-<% end %>
-<%#= link_to '戻る', :back %><br />
-<%= link_to 'トップページへ', root_path %>
+        <div class="container">
+          <div class="row">
+            <div id="achievement">
+              <div class="flex">
+                <div class="row" style="margin: 30px 0 0 0;">
+                  <div class="col s4 m4 l4">
+                    <% @score.values.each do |score| %>
+                      <% if score >= 20 %>
+                        <img src="/assets/award_S.png">
+                      <% elsif score < 20 && score >= 15 %>
+                        <img src="/assets/award_A.png">
+                      <% elsif score < 15 && score >= 10 %>
+                        <img src="/assets/award_B.png">
+                      <% elsif score < 10 && score >= 5 %>
+                        <img src="/assets/award_C.png">
+                      <% elsif score < 5 %>
+                        <img src="/assets/award_D.png">
+                      <% end %>
+                    <% end %>
+                  </div>
+                </div>
+                <div class="row"></div>
+                <div class="row">
+                  <div class="col s8 offset-s3">
+                    <h5>参加実績</h5>
+                    <% if @joins.exists? %>
+                      <% @joins.each do |join| %>
+                        <%= link_to quest_path(join.quest) do%>
+                          <p><%= join.quest.title %></p>
+                        <% end %>
+                        <p><%= "活動日：#{l join.quest.date}"%></p>
+                      <% end %>
+                    <% else %>
+                      <p>参加実績はありません</p>
+                    <% end %>
+                  </div>
+                  <div class="col s8 offset-s3">
+                    <h5>募集実績</h5>
+                    <% if @quests.exists? %>
+                      <% @quests.each do |quest| %>
+                        <%= link_to quest_path(quest) do%>
+                          <p><%= quest.title %></p>
+                        <% end %>
+                        <p><%= "活動日：#{l quest.date}"%></p>
+                      <% end %>
+                    <% else %>
+                      <p>募集実績はありません</p>
+                    <% end %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br><br>
+    </div>
+  </div>
+</div>
+<script>
+    const tabs = document.querySelectorAll('.tabs');
+    $(document).ready(function(){
+      $('ul.tabs').tabs();
+    });
+</script>
