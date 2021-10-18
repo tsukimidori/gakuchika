@@ -15,26 +15,25 @@
       </div>
 
       <div class="row z-depth-1 hoverable">
+
         <div id="basic">
           <div class="flex">
-            <div class="row user-frame" style="margin-left: 70px;">
-              <div class="col s6 m6 l6" style="margin: 2px;">
-                <%= image_tag @user.avatar.variant(gravity: :center, resize:"270x200", crop:"630x420+0+0").processed if @user.avatar.attached? %>
-                <%= image_tag '1907765.png', size: '150x80' unless @user.avatar.attached? %>
-              </div>
+            <div class="responsive-img user-frame row col s6 m6 l6">
+              <%= image_tag @user.avatar.variant(gravity: :center, resize:"270x200", crop:"630x420+0+0").processed, class: 'avatar' if @user.avatar.attached? %>
+              <%= image_tag '1907765.png', class: 'avatar' unless @user.avatar.attached? %>
             </div>
-            <div class="row">
-              <div class="col s8 offset-s3">
+            <div class="row col s6 m6 l6">
+              <div class="row">
                 <h5>ユーザー名</h5>
                 <%= "#{@user.last_name}#{@user.first_name}" %>
               </div>
-              <div class="col s8 offset-s3">
+              <div class="row">
                 <% if @user.id == current_user.id %>
                   <h5>メールアドレス</h5>
                   <%= @user.email %>
                 <% end %>
               </div>
-              <div class="col s8 offset-s3">
+              <div class="row">
                 <h5>プロフィール</h5>
                 <%= @user.profile%>
               </div>
@@ -62,24 +61,21 @@
           <div class="row">
             <div id="achievement">
               <div class="flex">
-                <div class="row" style="margin: 30px 0 0 0;">
-                  <div class="col s4 m4 l4">
+                <div class="row col s6 m6 l6 awards">
                     <% @score.values.each do |score| %>
                       <% if score >= 20 %>
-                        <img src="/assets/award_S.png">
+                        <img src="/assets/award_S.png" class="responsive-img award">
                       <% elsif score < 20 && score >= 15 %>
-                        <img src="/assets/award_A.png">
+                        <img src="/assets/award_A.png" class="responsive-img award">
                       <% elsif score < 15 && score >= 10 %>
-                        <img src="/assets/award_B.png">
+                        <img src="/assets/award_B.png" class="responsive-img award">
                       <% elsif score < 10 && score >= 5 %>
-                        <img src="/assets/award_C.png">
+                        <img src="/assets/award_C.png" class="responsive-img award">
                       <% elsif score < 5 %>
-                        <img src="/assets/award_D.png">
+                        <img src="/assets/award_D.png" class="responsive-img award">
                       <% end %>
                     <% end %>
-                  </div>
                 </div>
-                <div class="row"></div>
                 <div class="row">
                   <div class="col s8 offset-s3">
                     <h5>参加実績</h5>
@@ -112,6 +108,7 @@
             </div>
           </div>
         </div>
+
       </div>
       <br><br>
     </div>
