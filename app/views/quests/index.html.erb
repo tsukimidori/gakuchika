@@ -48,9 +48,9 @@
           <table class="responsive-table centered brown lighten-4 center-align  col s12 m12 l12">
             <thead>
               <tr>
-                <th>募 集 者 </th>
+                <th>募集者</th>
                 <th>募集人数</th>
-                <th>活 動 日 </th>
+                <th>活動日</th>
                 <th>活動地域</th>
                 <th>参加人数</th>
               </tr>
@@ -68,6 +68,12 @@
         </div>
       </div>
     <% end %>
+  </div>
+  <div class="row">
+    <div class="col s4 m3 l3">
+      <%= link_to_prev_page @quest, '前のページ', class: "prev btn green darken-1 waves-effect waves-light" %>
+      <%= link_to_next_page @quest, '次のページ', class: "next btn green darken-1 waves-effect waves-light" %>
+    </div>
   </div>
 </div>
 
