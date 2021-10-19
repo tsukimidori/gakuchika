@@ -24,30 +24,30 @@
         <div class="row">
           <div id="basic">
             <div class="row col s12 m12 l12">
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "募集者：#{@quest.user.last_name}#{@quest.user.first_name}さん" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "募集予定人数：#{@quest.capacity}人" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "活動予定日：#{l @quest.date}" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "活動地域：#{@quest.place_name}" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "応募対象者：#{@quest.target_attribute_name}" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "応募資格：#{@quest.target}" %>
               </div>
-              <div class="col s12 m6 l3">
+              <div class="col s12 m6 l4">
                 <%= "報酬：#{@quest.reward}" %>
               </div>
             </div>
             <div class="row">
-              <div class="col s12 m6 l3">
+              <div class="col s12 m12 l12">
                 <p>アピールポイント：<%= raw(nl2br(@quest.point)) %></p>
               </div>
             </div>
