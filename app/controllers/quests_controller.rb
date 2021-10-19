@@ -3,7 +3,7 @@ class QuestsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-    @quest = Quest.includes(:user).order(id: "DESC")
+    @quest = Quest.includes(:user).order(id: "DESC").page(params[:page]).without_count.per(6)
   end
 
   def new
