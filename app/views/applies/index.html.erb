@@ -1,22 +1,46 @@
-<h3>承認待ち一覧</h3>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">承認待ち一覧</h3>
+      <br><br>
 
-<% if @applies.exists? %>
-  <div>
-    <% @applies.each do |app| %>
-    <div>
-      <%= link_to user_path(app.user) do %>
-        <%= image_tag app.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed if app.user.avatar.attached? %>
-        <%= image_tag '1907765.png', size: '150x80' unless app.user.avatar.attached? %>
-      <% end %>
-      <%= link_to "#{app.user.last_name}#{app.user.first_name}さん", user_path(app.user) %><br />
-      <%= link_to '承認', quest_joins_path(app.quest, user_id: app.user.id, apply_id: app.id), method: :post %>
-      <%= link_to '却下', quest_apply_path(app.quest, app), method: :delete %>
+      <div class="container">
+        <% if @applies.exists? %>
+          <% @applies.each do |app| %>
+            <div class="row flex">
+              <div class="chip col s6 m6 l6 orange darken-1">
+                <%= image_tag app.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed, class: 'circle responsive-img', style: 'background-color: white;' if app.user.avatar.attached? %>
+                <%= image_tag '1907765.png', size: '150x80', class: 'circle responsive-img', style: 'background-color: white;' unless app.user.avatar.attached? %>
+                <%= link_to user_path(app.user) do %>
+                  <p class="white-text"><%= "#{app.user.last_name}#{app.user.first_name}" %> </p>
+                <% end %>
+              </div>
+              <div class="col s6 m6 l6 flex-ex">
+                <div>
+                  <%= link_to quest_joins_path(app.quest, user_id: app.user.id, apply_id: app.id), method: :post do %>
+                    <button class="btn green darken-1 waves-effect waves-light">承認</button>
+                  <% end %>
+                </div>
+                <div>
+                  <%= link_to quest_apply_path(app.quest, app), method: :delete do %>
+                    <button class="btn red darken-1 waves-effect waves-light">却下</button>
+                  <% end %> 
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <P>現在承認待ちの方はいません。</p>
+        <% end %>
+        
+        <%= link_to :back do %>
+          <button class="btn waves-effect waves-teal btn-flat">戻る</button>
+        <% end %>
+        <%= link_to root_path do %>
+          <button class="btn waves-effect waves-teal btn-flat">トップページ</button>
+        <% end %>
+      </div>
     </div>
-    <% end %>
   </div>
-<% else %>
-  <P>現在承認待ちの方はいません。</p>
-<% end %>
-
-<%= link_to '戻る', :back %>
-<%= link_to 'トップページへ', root_path %>
+</div>
