@@ -9,12 +9,17 @@
         <%= render "devise/shared/error_messages", resource: resource %>
       
         <div class="row">
-          <div class="field">
-            プロフィール画像<br />
-            <%= f.file_field :avatar %>
-          </div>
+          <div class="file-field input-field">
+            <div class="btn">
+              <span><%= f.label :avatar, "画像" %></span>
+              <i class="material-icons" style="vertical-align: -4px;">portrait</i>
+              <%= f.file_field :avatar %>
+            </div>
+            <div class="file-path-wrapper">
+              <input class="file-path validate" type="text">
+            </div>
         </div>
-        
+
         <div class="row">
           <div class="input-field col s6">
             <%= f.label :last_name, "Family name(苗字)" %>
@@ -29,7 +34,7 @@
         <div class="row">
           <div class="input-field col s12">
             <%= f.label :profile, "プロフィール" %>
-            <%= f.text_area :profile, autofocus: true %>
+            <%= f.text_area :profile, autofocus: true, class: 'materialize-textarea' %>
           </div>
         </div>
       

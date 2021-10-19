@@ -1,5 +1,20 @@
-<h3>案件編集</h3>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">案件編集</h3>
+      <br><br>
 
-<%= render 'layouts/quest_form', model: @quest %>
-
-<%= link_to '案件詳細へ', quest_path(@quest) %>
+      <%= render 'layouts/quest_form', model: @quest %>
+      
+      <button class="btn waves-effect waves-teal btn-flat"><a href="<%= quest_path(@quest) %>">案件詳細へ</a>
+    </div>
+  </div>
+</div>
+<script>
+  const datepicker = document.querySelector('.datepicker');
+  $(document).ready(function () {
+   $('.datepicker').datepicker({
+   });
+  })
+</script>

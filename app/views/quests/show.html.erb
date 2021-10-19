@@ -1,141 +1,215 @@
-<h1>募集要項</h1>
-
-<h3><%= @quest.title %></h3>
-<div>
-  <%= image_tag @quest.image.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed if @quest.image.attached? %>
-  <%= image_tag '1907765.png', size: '150x80' unless @quest.image.attached? %>
-</div>
-
-<h3>・基本情報</h3>
-<div>
-  <%= "募集者：#{@quest.user.last_name}#{@quest.user.first_name}さん" %><br />
-</div>
-<div>
-  <%= "募集予定人数：#{@quest.capacity}人" %><br />
-</div>
-<div>
-  <%= "活動予定日：#{l @quest.date}" %><br />
-</div>
-<div>
-  <%= "活動地域：#{@quest.place_name}" %><br />
-</div>
-<div>
-  <%= "応募対象者：#{@quest.target_attribute_name}" %><br />
-</div>
-<div>
-  <%= "応募資格：#{@quest.target}" %><br />
-</div>
-<div>
-  <%= "報酬：#{@quest.reward}" %><br />
-</div>
-<div>
-  アピールポイント：<p><%= raw(nl2br(@quest.point)) %></p><br />
-</div>
-
-<h3>・詳細情報</h3>
-<%= raw(nl2br(@quest.detail)) %><br />
-
-<h3>評価一覧</h3>
-<% if Message.exists?(quest_id: @quest.id)%>
-  <% if user_signed_in? && @joins.exists?(user_id: current_user.id) %>
-    <% if current_user.id == @quest.user_id %>
-      <% @messages.each do |message| %>
-        <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
-        <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
-      <% end %>
-    <% elsif current_user.id != @quest.user_id %>
-      <% if @messages.exists?(user_id: @quest.user_id, sending_party_id: current_user.id) %>
-        <%= "To：#{current_user.last_name}#{current_user.first_name}さん"%><br />
-        <%= "#{Message.find_by(quest_id: @quest.id, user_id: @quest.user_id).message}（#{@quest.user.last_name}#{@quest.user.first_name}＠募集者さん）" %><br />
-      <% else %>
-        <%= "#{current_user.last_name}#{current_user.first_name}さん宛のメッセージはありません"%><br />
-      <% end %>
-      <% if @messages.exists?(user_id: current_user.id) %>
-        <%= "To：#{@quest.user.last_name}#{@quest.user.first_name}さん"%><br />
-        <%= "#{Message.find_by(quest_id: @quest.id, user_id: current_user.id).message}（#{current_user.last_name}#{current_user.first_name}さん）" %><br />
-      <% end %>
-    <% end %>
-  <% else %>
-    <% @messages.each do |message| %>
-      <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
-      <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %><br />
-    <% end %>
-  <% end %>
-<% else %>
-  評価はまだありません。<br />
-<% end %>
-
-<% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
-  <h3>評価する</h3>
-  <%= form_with model: [@quest, @message], local: true do |f| %>
-    <% if current_user.id != @quest.user_id %>
-      <% if @messages.exists?(user_id: current_user.id) %>
-        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
-      <% else %>
-        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
-        <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
-        <%= f.label :message, 'メッセージ' %><br/>
-        <%= f.text_area :message, autofocus: true %><br />
-        <div id="rating-form">
-          <%= f.hidden_field :like %>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">募集要項</h3>
+      <br><br>
+      <div class="row col s12">
+        <div class="row col s12 m12 l12 center-align">
+          <%= image_tag @quest.image.variant(gravity: :center, resize:"320x320^", crop:"640x640+0+0").processed, class: 'responsive-img' if @quest.image.attached? %>
+          <%= image_tag '1907765.png', class: 'responsive-img' unless @quest.image.attached? %>
+          <h4 class="header"><%= @quest.title %></h4>
         </div>
-        <script>
-          $('#rating-form').raty({
-              starOn: "<%= asset_path('star-on.png') %>",
-              starOff: "<%= asset_path('star-off.png') %>",
-              scoreName: 'message[like]'
-          });
-        </script>
-        <%= f.submit '送信する' %>
-      <% end %>
-    <% else %>
-      <select name="message[sending_party_id]" class="browser-default">
-        <option value="">評価相手を選択してください</option>
-        <% @joins.each do |join| %>
-          <% if @messages.exists?(sending_party_id: join.user_id) %>
-            <option value=<%= join.user_id %> disabled><%= "#{join.user.last_name}#{join.user.first_name}さん（評価済み）" %></option>
+
+        <div class="row">
+          <div class="col s12 m12 l12">
+            <ul class="tabs tabs-transparent">
+              <li class="tab col s4 m4 l4"><a class="active brown-text text-darken-4" href="#basic">基本情報</a></li>
+              <li class="tab col s4 m4 l4"><a class="brown-text text-darken-4" href="#detail">詳細情報</a></li>
+              <li class="tab col s4 m4 l4"><a class="brown-text text-darken-4" href="#evaluation">評価を見る・送る</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="row">
+          <div id="basic">
+            <div class="row col s12 m12 l12">
+              <div class="col s12 m6 l4">
+                <%= "募集者：#{@quest.user.last_name}#{@quest.user.first_name}さん" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "募集予定人数：#{@quest.capacity}人" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "活動予定日：#{l @quest.date}" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "活動地域：#{@quest.place_name}" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "応募対象者：#{@quest.target_attribute_name}" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "応募資格：#{@quest.target}" %>
+              </div>
+              <div class="col s12 m6 l4">
+                <%= "報酬：#{@quest.reward}" %>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col s12 m12 l12">
+                <p>アピールポイント：<%= raw(nl2br(@quest.point)) %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row col s12 m12 l12">
+          <div id="detail">
+              <div class="col s12">
+                <%= raw(nl2br(@quest.detail)) %>
+              </div>
+          </div>
+        </div>
+
+        <div class="row col s12 m12 l12">
+          <div id="evaluation">
+            <div class="row col s12 m12 l12">
+                <h5>評価一覧</h5>
+                <% if Message.exists?(quest_id: @quest.id)%>
+                  <% if user_signed_in? && @joins.exists?(user_id: current_user.id) %>
+                    <% if current_user.id == @quest.user_id %>
+                      <% @messages.each do |message| %>
+                        <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
+                        <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %>
+                      <% end %>
+                    <% elsif current_user.id != @quest.user_id %>
+                      <% if @messages.exists?(user_id: @quest.user_id, sending_party_id: current_user.id) %>
+                        <%= "To：#{current_user.last_name}#{current_user.first_name}さん"%><br />
+                        <%= "#{Message.find_by(quest_id: @quest.id, user_id: @quest.user_id).message}（#{@quest.user.last_name}#{@quest.user.first_name}＠募集者さん）" %><br />
+                      <% else %>
+                        <%= "#{current_user.last_name}#{current_user.first_name}さん宛のメッセージはありません"%><br />
+                      <% end %>
+                      <% if @messages.exists?(user_id: current_user.id) %>
+                        <%= "To：#{@quest.user.last_name}#{@quest.user.first_name}さん"%><br />
+                        <%= "#{Message.find_by(quest_id: @quest.id, user_id: current_user.id).message}（#{current_user.last_name}#{current_user.first_name}さん）" %><br />
+                      <% end %>
+                    <% end %>
+                  <% else %>
+                    <% @messages.each do |message| %>
+                      <%= "To：#{User.find(message.sending_party_id).last_name}#{User.find(message.sending_party_id).first_name}さん"%><br />
+                      <%= "#{message.message}（#{message.user.last_name}#{message.user.first_name}さん）" %><br />
+                    <% end %>
+                  <% end %>
+                <% else %>
+                  評価はまだありません。<br />
+                <% end %>
+            </div>
+
+            <div class="col col s12 m12 l12">
+              <% if user_signed_in? && current_user.id == @quest.user_id || Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+                <h5>評価する</h5>
+                <%= form_with model: [@quest, @message], local: true do |f| %>
+                  <% if current_user.id != @quest.user_id %>
+                    <% if @messages.exists?(user_id: current_user.id) %>
+                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
+                    <% else %>
+                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
+                      <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
+                      <%= f.label :message, 'メッセージ' %><br/>
+                      <%= f.text_area :message, autofocus: true %><br />
+                      <div id="rating-form">
+                        <%= f.hidden_field :like %>
+                      </div>
+                      <script>
+                        $('#rating-form').raty({
+                            starOn: "<%= asset_path('star-on.png') %>",
+                            starOff: "<%= asset_path('star-off.png') %>",
+                            scoreName: 'message[like]'
+                        });
+                      </script>
+                      <%= f.submit '送信する' %>
+                    <% end %>
+                  <% else %>
+                    <div class="row input-field col s12">
+                      <select name="message[sending_party_id]" class="register browser-default" style="border: 1px solid #90a4ae;">
+                        <option value="" disabled selected>評価相手を選択してください</option>
+                        <% @joins.each do |join| %>
+                          <% if @messages.exists?(sending_party_id: join.user_id) %>
+                            <option value=<%= join.user_id %> disabled><%= "#{join.user.last_name}#{join.user.first_name}さん（評価済み）" %></option>
+                          <% else %>
+                            <option value=<%= join.user_id %>><%= "#{join.user.last_name}#{join.user.first_name}さん" %></option>
+                          <% end %>
+                        <% end %>
+                      </select>
+                    </div>
+                    <div class="row input-field col s12" style="margin-left: 20px;">
+                      <%= f.label :message, 'メッセージ' %>
+                      <%= f.text_area :message, autofocus: true, class: 'materialize-textarea' %><br />
+                      <div id="rating-form">
+                        <%= f.hidden_field :like %>
+                      </div>
+                    </div>
+                    <script>
+                      $('#rating-form').raty({
+                          starOn: "<%= asset_path('star-on.png') %>",
+                          starOff: "<%= asset_path('star-off.png') %>",
+                          scoreName: 'message[like]'
+                      });
+                    </script>
+                    <div class="row">
+                      <div class="actions right-align">
+                        <button class="btn waves-effect waves-light"><%= f.submit '送信する' %><i class="material-icons" style="vertical-align: -4px;">mail_outline</i></button>
+                      </div>
+                    </div>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% if user_signed_in? && current_user.id == @quest.user_id %>
+        <div class="row col s4 m4 l4">
+          <%= link_to quest_applies_path(@quest) do %>
+            <button class="btn waves-effect waves-light">承認待ち一覧へ<i class="material-icons" style="vertical-align: -4px;">person_add</i></button>
+          <% end %>
+        </div>
+        <div class="row col s4 m4 l4">
+          <%= link_to edit_quest_path(@quest) do %>
+            <button class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></button>
+          <% end%>
+        </div>
+        <div class="row col s4 m4 l4">
+          <%= link_to quest_path(@quest), method: :delete do %>
+            <button class="btn waves-effect waves-light">破棄する<i class="material-icons" style="vertical-align: -4px;">delete</i></button>
+          <% end %>
+        </div>
+      <% else %>
+        <% if Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+          <% unless @messages.exists?(sending_party_id: current_user.id) || @messages.exists?(user_id: current_user.id) %>
+            <div class="row col s4 m4 l4">
+              <%= link_to quest_join_path(@quest, @join), method: :delete do %>
+                <button class="btn waves-effect waves-light">参加取消<i class="material-icons" style="vertical-align: -4px;">delete</i></button>
+              <% end %>
+            </div>
+          <% end %>
+        <% elsif current_user %>
+          <% if Apply.exists?(quest_id: @quest.id, user_id: current_user.id) %>
+            <div class="row col s4 m4 l4">
+              <%= link_to quest_apply_path(@quest, @apply), method: :delete do %>
+                <button class="btn waves-effect waves-light">申請取消<i class="material-icons" style="vertical-align: -4px;">delete</i></button>
+              <% end %>
+            </div>
           <% else %>
-            <option value=<%= join.user_id %>><%= "#{join.user.last_name}#{join.user.first_name}さん" %></option>
+            <div class="row col s4 m4 l4">
+              <%= link_to quest_applies_path(@quest), method: :post do %>
+                <button class="btn waves-effect waves-light">応募する<i class="material-icons" style="vertical-align: -4px;">person_add</i></button>
+              <% end %>
+            </div>
           <% end %>
         <% end %>
-      </select><br />
-      <%= f.label :message, 'メッセージ' %><br/>
-      <%= f.text_area :message, autofocus: true %><br />
-      <div id="rating-form">
-        <%= f.hidden_field :like %>
-      </div>
-      <script>
-        $('#rating-form').raty({
-            starOn: "<%= asset_path('star-on.png') %>",
-            starOff: "<%= asset_path('star-off.png') %>",
-            scoreName: 'message[like]'
-        });
-      </script>
-      <%= f.submit '送信する' %>
-    <% end %>
-  <% end %>
-<% end %>
-
-
-<% if user_signed_in? && current_user.id == @quest.user_id %>
-  <div>
-    <%= link_to '承認待ち一覧へ', quest_applies_path(@quest) %>
-    <%= link_to '編集する', edit_quest_path(@quest) %>
-    <%= link_to '破棄する', quest_path(@quest), method: :delete %>
+      <% end %>
+      
+      
+      <button class="btn waves-effect waves-teal btn-flat"><a href="/">トップページへ</a></button>
+    </div>
   </div>
-<% else %>
-  <% if Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
-    <% unless @messages.exists?(sending_party_id: current_user.id) || @messages.exists?(user_id: current_user.id) %>
-      <%= link_to '参加取消', quest_join_path(@quest, @join), method: :delete %>
-    <% end %>
-  <% elsif current_user %>
-    <% if Apply.exists?(quest_id: @quest.id, user_id: current_user.id) %>
-      <%= link_to '申請取消', quest_apply_path(@quest, @apply), method: :delete %>
-    <% else %>
-      <%= link_to '応募する', quest_applies_path(@quest), method: :post %>
-    <% end %>
-  <% end %>
-<% end %>
-
-
-<%= link_to 'トップページへ', root_path %>
+</div>
+<script>
+  const tabs = document.querySelectorAll('.tabs');
+    $(document).ready(function(){
+      $('ul.tabs').tabs();
+    });
+</script>

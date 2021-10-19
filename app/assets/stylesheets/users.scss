@@ -9,29 +9,29 @@
   background-image: url("/assets/f1377_1.png");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
  }
- .award-s{
-  background-image: url("/assets/award_S.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+ .avatar{
+   position: absolute;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   margin: auto;
+   max-width: 90%;
+   max-height: 90%;
  }
- .award-a{
-  background-image: url("/assets/award_A.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+ .awards{
+  position: relative;
  }
- .award-b{
-  background-image: url("/assets/award_B.png");
-  background-size: contain;
-  background-repeat: no-repeat;
- }
- .award-c{
-  background-image: url("/assets/award_C.png");
-  background-size: contain;
-  background-repeat: no-repeat;
- }
- .award-d{
-  background-image: url("/assets/award_D.png");
-  background-size: contain;
-  background-repeat: no-repeat;
+ .award{
+   position: absolute;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   margin: auto;
+   max-width: 100%;
+   height: auto;
  }

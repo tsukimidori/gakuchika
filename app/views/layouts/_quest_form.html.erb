@@ -1,58 +1,79 @@
 <%= form_with model: @quest, local: true do |q| %>
 <%= render 'layouts/error_messages', model: q.object %>
 
-  <div>
-    <%= q.label :title, 'タイトル' %><br />
-    <%= q.text_field :title, autofocus: true %>
+  <div class="row">
+    <div class="file-field input-field">
+      <div class="btn">
+        <span><%= q.label :image, "画像" %></span>
+        <i class="material-icons" style="vertical-align: -4px;">photo</i>
+        <%= q.file_field :image %>
+      </div>
+      <div class="file-path-wrapper">
+        <input class="file-path validate" type="text">
+      </div>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :reward, '報酬形態' %><br />
-    <%= q.text_field :reward %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= q.label :title, 'タイトル' %>
+      <%= q.text_field :title, autofocus: true %>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :capacity, '募集予定人数' %><br />
-    <%= q.number_field :capacity, min: 1, max: 10 %>人
+  <div class="row">
+    <div class="input-field col s12">
+      <%= q.label :reward, '報酬形態' %>
+      <%= q.text_field :reward %>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :date, '活動日' %><br />
-    <%= raw sprintf(q.date_select(:date, use_month_numbers: true, start_year: Time.now.year, date_separator: '%s'), '年', '月') + '日' %>
+  <div class="row">
+    <div class="input-field col s6">
+      <%= q.label :capacity, '募集予定人数' %>
+      <%= q.number_field :capacity, min: 1, max: 10  %>
+    </div>
+    <div class="input-field col s6">
+      <%= q.label :date, '活動日' %>
+      <%= q.text_field :date, class: 'datepicker' %>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :target, '応募者資格' %><br />
-    <%= q.text_field :target %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= q.label :target, '応募者資格' %>
+      <%= q.text_field :target %>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :point, 'アピールポイント' %><br />
-    <%= q.text_area :point %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= q.label :point, 'アピールポイント' %>
+      <%= q.text_area :point, class: 'materialize-textarea' %>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :place_id, '活動地域' %><br />
-    <%= q.collection_select(:place_id, Place.all, :id, :name) %>
+  <div class="row flex input-field col s6">
+    <%= q.collection_select(:place_id, Place.all, :id, :name, {prompt: '活動地域'}, {class: "register browser-default", style: "border: 1px solid #90a4ae;"}) %>
+    <%= q.collection_select(:target_attribute_id, TargetAttribute.all, :id, :name, {prompt: '応募対象者'}, {class: "register browser-default", style: "border: 1px solid #90a4ae;"}) %>
   </div>
 
-  <div>
-    <%= q.label :target_attribute_id, '応募対象者' %><br />
-    <%= q.collection_select(:target_attribute_id, TargetAttribute.all, :id, :name) %>
+  <div class="row">
+    <div class="input-field col s12">
+      <%= q.label :detail, '募集詳細' %>
+      <%= q.text_area :detail, class: 'materialize-textarea' %>
+      <em class="helper-text">募集の詳細を書いてね</em>
+      <span class="helper-text">・詳しい活動日時や活動内容</span>
+      <span class="helper-text">・応募資格の詳細 etc..</span>
+    </div>
   </div>
 
-  <div>
-    <%= q.label :detail, '募集詳細' %><br><em>募集の詳細を書いてね<br>・詳しい活動日時や活動内容<br>・応募資格の詳細 etc..<br />
-    <%= q.text_area :detail %>
-  </div>
 
-  <div>
-    <%= q.label :image, "イメージ画像" %><br />
-    <%= q.file_field :image %>
-  </div><br />
 
-  <div>
-    <%= q.submit '投稿する' %>
+  <div class="row">
+    <div class="actions right-align">
+      <button class="btn waves-effect waves-light"><%= q.submit '投稿する' %><i class="material-icons" style="vertical-align: -4px;">mail_outline</i></button>
+    </div>
   </div>
 
 <% end %>

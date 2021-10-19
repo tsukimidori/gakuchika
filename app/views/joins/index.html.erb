@@ -1,19 +1,29 @@
-<h3>参加者一覧</h3>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">参加者一覧</h3>
+      <br><br>
 
-<% if @joins.exists? %>
-  <div>
-    <% @joins.each do |join| %>
-      <div>
-        <%= link_to user_path(join.user) do %>
-          <%= image_tag join.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed if join.user.avatar.attached? %>
-          <%= image_tag '1907765.png', size: '150x80' unless join.user.avatar.attached? %>
+      <div class="container">
+        <% if @joins.exists? %>
+          <% @joins.each do |join| %>
+            <div class="row col s12 m12 l12 m-flex">
+              <div class="chip col s6 m6 l6 orange darken-1">
+                <%= image_tag join.user.avatar.variant(gravity: :center, resize:"160x160^", crop:"320x320+0+0").processed, class: 'circle responsive-img', style: 'background-color: white;' if join.user.avatar.attached? %>
+                <%= image_tag '1907765.png', size: '150x80', class: 'circle responsive-img', style: 'background-color: white;' unless join.user.avatar.attached? %>
+                <%= link_to user_path(join.user) do %>
+                  <p class="white-text"><%= "#{join.user.last_name}#{join.user.first_name}さん" %></p>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        <% else %>
+          <P>参加者はいません</p>
         <% end %>
-        <%= link_to "#{join.user.last_name}#{join.user.first_name}さん", user_path(join.user) %><br />
-      </div>
-    <% end %>
+        <%= link_to :back do %>
+          <button class="btn waves-effect waves-teal btn-flat">戻る</button>
+        <% end %>
+    </div>
   </div>
-<% else %>
-  <P>参加者はいません</p>
-<% end %>
-
-<%= link_to '戻る', :back %>
+</div>

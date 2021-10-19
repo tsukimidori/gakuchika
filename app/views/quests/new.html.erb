@@ -1,5 +1,20 @@
-<h1>新規募集</h1>
+<div class="container desc section " style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="register hoverable">
+    <div class="container">
+      <br>
+      <h3 class="header center">新規募集</h3>
+      <br><br>
 
-<%= render 'layouts/quest_form', model: @quest %>
-<%#= link_to '戻る', :back %><br />
-<%= link_to 'トップページへ', root_path %>
+      <%= render 'layouts/quest_form', model: @quest %>
+      <br />
+      <button class="btn waves-effect waves-teal btn-flat"><a href="<%= user_path(current_user) %>">マイページに戻る</a></button>
+    </div>
+  </div>
+</div>
+<script>
+  const datepicker = document.querySelector('.datepicker');
+  $(document).ready(function () {
+   $('.datepicker').datepicker({
+   });
+  })
+</script>
