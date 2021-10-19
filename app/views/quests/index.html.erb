@@ -30,47 +30,45 @@
 
 
 <div class="container row wood z-depth-5" style="width: 100%;height: 100%;max-width: 100%;margin: auto;">
+  <div class="row m-flex">
     <% @quest.each do |quest| %>
       <div class="col s12 m4 l2">
         <div class="card hoverable">
-          <div class="card-image">
-            <%= link_to quest_path(quest) do %>
-              <%= image_tag quest.image if quest.image.attached? %>
-              <%= image_tag 'sky_00010.jpeg' unless quest.image.attached? %>
-            <% end %>
-            
-          </div>
+            <div class="card-image">
+              <%= link_to quest_path(quest) do %>
+                <%= image_tag quest.image, class: 'responsive-img' if quest.image.attached? %>
+                <%= image_tag 'sky_00010.jpeg', class: 'responsive-img' unless quest.image.attached? %>
+              <% end %>
+            </div>
           <div class="card-tabs">
             <ul class="tabs tabs-fixed-width  brown lighten-3">
               <li class="tab"><p class="card-title"><%= quest.title %></p></li>
             </ul>
           </div>
-          <div class="card-content brown lighten-4">
-            <table class="responsive-table centered">
-              <thead>
-                <tr>
-                  <th>募 集 者 </th>
-                  <th>募集人数</th>
-                  <th>活 動 日 </th>
-                  <th>活動地域</th>
-                  <th>参加人数</th>
-                </tr>
-              </thead>
-
-              <tbody>
-                <tr>
-                  <td><%= link_to "#{quest.user.last_name}#{quest.user.first_name}", user_path(quest.user) %></td>
-                  <td><%= "#{quest.capacity}人" %></td>
-                  <td><%= "#{l quest.date}" %></td>
-                  <td><%= "#{quest.place_name}" %></td>
-                  <td><%= link_to "#{quest.joins.count}人", quest_joins_path(quest)%></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="responsive-table centered brown lighten-4 center-align  col s12 m12 l12">
+            <thead>
+              <tr>
+                <th>募 集 者 </th>
+                <th>募集人数</th>
+                <th>活 動 日 </th>
+                <th>活動地域</th>
+                <th>参加人数</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><%= link_to "#{quest.user.last_name}#{quest.user.first_name}", user_path(quest.user) %></td>
+                <td><%= "#{quest.capacity}人" %></td>
+                <td><%= "#{l quest.date}" %></td>
+                <td><%= "#{quest.place_name}" %></td>
+                <td><%= link_to "#{quest.joins.count}人", quest_joins_path(quest)%></td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     <% end %>
+  </div>
 </div>
 
 <div class="parallax-container valign-wrapper">

@@ -18,3 +18,14 @@
   filter: blur(3px);
   z-index: -1;
  }
+ .row.m-flex{
+    float: none;
+    display: flex;
+    flex-flow: row wrap;
+  }
+  .row.m-flex.m-flex .col{ /* 優先度を上げるために2回指定 */
+    float: none;
+  }
+  .row.m-flex.m-flex .col:not([class*="offset-"]){
+    margin-left: unset; /* 元々ついているmargin-left: autoを解除 */
+  }
