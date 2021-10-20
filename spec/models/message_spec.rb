@@ -41,6 +41,11 @@ RSpec.describe Message, type: :model do
         @message.valid?
         expect(@message.errors.full_messages).to include("Questを入力してください")
       end
+      it 'メッセージが101文字以上の場合' do
+        @message.message = Faker::Lorem.characters(number: 101)
+        @message.valid?
+        expect(@message.errors.full_messages).to include("Messageは100文字以内で入力してください")
+      end
     end
   end
 end
