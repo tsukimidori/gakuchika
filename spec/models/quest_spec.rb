@@ -92,6 +92,11 @@ RSpec.describe Quest, type: :model do
         @quest.valid?
         expect(@quest.errors.full_messages).to include("活動地域を選択してください")
       end
+      it '投稿者が紐づいていないとき' do
+        @quest.user = nil
+        @quest.valid?
+        expect(@quest.errors.full_messages).to include("Userを入力してください")
+      end
     end
   end
 end
