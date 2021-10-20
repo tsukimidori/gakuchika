@@ -10,4 +10,9 @@ class User < ApplicationRecord
   has_many :applies
   has_many :joins
   has_many :messages
+
+  with_options format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: 'は全角文字（漢字・ひらがな・カタカナ）で入力してください'} do
+    validates :last_name
+    validates :first_name
+  end
 end
