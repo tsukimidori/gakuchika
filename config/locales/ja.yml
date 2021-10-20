@@ -33,3 +33,6 @@ ja:
         title: タイトル
         target: 応募者資格
         capacity: 募集予定人数
+        date: 活動日
+        place_id: 活動地域
+        target_attribute_id: 応募対象者

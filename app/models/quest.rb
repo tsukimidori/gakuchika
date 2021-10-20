@@ -11,7 +11,7 @@ class Quest < ApplicationRecord
   validates :title,               presence: true
   validates :date,                presence: true
   validates :target,              presence: true
-  validates :place_id,            presence: true
-  validates :target_attribute_id, presence: true
+  validates :place_id,            presence: true, numericality: { message: "を選択してください" }
+  validates :target_attribute_id, presence: true, numericality: { message: "を選択してください" }
   validates :capacity,            presence: true
 end
