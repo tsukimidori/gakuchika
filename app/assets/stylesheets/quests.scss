@@ -4,19 +4,7 @@
  .wood{
   background-image: 
       url("/assets/wood-texture_00033.jpeg");
-  position: relative;
   z-index: 0;
- }
- .wood::before {
-  content: '';
-  position: absolute;
-  top: -5px;
-  bottom: -5px;
-  left: -5px;
-  right: -5px;
-  background: inherit;
-  filter: blur(3px);
-  z-index: -1;
  }
  .row.m-flex{
     float: none;
