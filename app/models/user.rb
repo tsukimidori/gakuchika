@@ -11,6 +11,10 @@ class User < ApplicationRecord
   has_many :joins
   has_many :messages
 
+  PASSWORD_REGEX = /\A(?=.*?[a-z])(?=.*?[\d])[a-z\d]+\z/i.freeze
+  validates_format_of :password, with: PASSWORD_REGEX, message: 'は半角英数字の両方を含めて入力してください'
+
+
   with_options format: { with: /\A[ぁ-んァ-ヶ一-龥々ー]+\z/, message: 'は全角文字（漢字・ひらがな・カタカナ）で入力してください'} do
     validates :last_name
     validates :first_name
