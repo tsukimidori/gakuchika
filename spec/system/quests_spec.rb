@@ -401,3 +401,35 @@ RSpec.describe "ボランティア募集（編集）", type: :system do
     end
   end
 end
+
+RSpec.describe "ボランティア募集（削除）", type: :system do
+  before do
+    @quest = FactoryBot.create(:quest)
+    @user_oth = FactoryBot.create(:user)
+  end
+
+  context '募集を削除できるとき' do
+    it '投稿したユーザーは募集を削除できる' do
+      #ボランティアを投稿したユーザーでログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(@quest.user)
+      #投稿したユーザーが募集詳細ページに遷移すると編集するボタンが表示されていることを確認する
+      visit quest_path(@quest)
+      expect(page).to have_link '破棄する', href: quest_path(@quest)
+      #破棄するボタンを押すとQuestモデルのカウントが1下がりトップページへ遷移する
+      expect{find_button('破棄する').click}.to change { Quest.count }.by(-1)
+      expect(current_path).to eq(root_path)
+    end
+  end
+  context '募集を削除できないとき' do
+    it '他人が投稿したボランティア詳細には破棄するボタンが表示されない' do
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(@user_oth)
+      #別のユーザーが投稿した募集詳細へ遷移
+      visit quest_path(@quest)
+      #ボランティアを編集するボタンが表示されていない
+      expect(page).to have_no_content('破棄する')
+    end
+  end
+end
