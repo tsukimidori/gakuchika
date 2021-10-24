@@ -34,6 +34,8 @@ RSpec.configure do |config|
   config.include BasicPathSupport
   config.include SignInSupport
   config.include FillQuestSupport
+  config.include UserNameSupport
+  config.include FillMessageSupport
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 

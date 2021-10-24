@@ -102,14 +102,20 @@
                 <%= form_with model: [@quest, @message], local: true do |f| %>
                   <% if current_user.id != @quest.user_id %>
                     <% if @messages.exists?(user_id: current_user.id) %>
-                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
+                      <div class="row input-field col s12">
+                        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんへの評価は投稿済みです。" %><br />
+                      </div>
                     <% else %>
-                      <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
-                      <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
-                      <%= f.label :message, 'メッセージ' %><br/>
-                      <%= f.text_area :message, autofocus: true %><br />
-                      <div id="rating-form">
-                        <%= f.hidden_field :like %>
+                      <div class="row input-field col s12">
+                        <%= "#{@quest.user.last_name}#{@quest.user.first_name}さんに今回の評価を行います。" %><br />
+                        <%= f.hidden_field :sending_party_id, value: @quest.user_id %>
+                      </div>
+                      <div class="row input-field col s12" style="margin-left: 20px;">
+                        <%= f.label :message, 'メッセージ' %>
+                        <%= f.text_area :message, autofocus: true, class: 'materialize-textarea' %><br />
+                        <div id="rating-form">
+                          <%= f.hidden_field :like %>
+                        </div>
                       </div>
                       <script>
                         $('#rating-form').raty({
@@ -118,7 +124,11 @@
                             scoreName: 'message[like]'
                         });
                       </script>
-                      <%= f.submit '送信する' %>
+                      <div class="row">
+                      <div class="actions right-align">
+                        <button class="btn waves-effect waves-light"><%= f.submit '送信する' %><i class="material-icons" style="vertical-align: -4px;">mail_outline</i></button>
+                      </div>
+                    </div>
                     <% end %>
                   <% else %>
                     <div class="row input-field col s12">
