@@ -235,7 +235,7 @@ RSpec.describe "ボランティア募集（編集）", type: :system do
       #ボランティアを投稿したユーザーでログインしてトップページに遷移する
       basic_path(root_path)
       sign_in(@quest.user)
-      #投稿したユーザーが募集詳細ページに遷移すると編集するボタンが表示されていることを確認する
+      #投稿したユーザーが募集要項ページに遷移すると編集するボタンが表示されていることを確認する
       visit quest_path(@quest)
       expect(page).to have_link '編集する', href: edit_quest_path(@quest)
       #編集するボタンを押すと編集ページに遷移することを確認する
@@ -384,20 +384,41 @@ RSpec.describe "ボランティア募集（編集）", type: :system do
       #ボランティアを編集するボタンが表示されていない
       expect(page).to have_no_content('編集する')
     end
-    it '未ログイン状態でボランティア募集投稿ページへURLで遷移しようとしてもログインページへ遷移する' do
+    it '未ログイン状態で編集ページへURLで遷移しようとしてもログインページへ遷移する' do
       #トップページに遷移する
       basic_path(root_path)
-      #URLから直接ボランティア投稿ページへ遷移しようとするとログインページ遷移する
+      #URLから直接ボランティア編集ページへ遷移しようとするとログインページ遷移する
       visit edit_quest_path(@quest)
       expect(current_path).to eq(user_session_path)
     end
-    it '他人が投稿したボランティアの案件編集ページへURLで遷移しようとしても案件詳細ページへ遷移する' do
+    it '他人が投稿したボランティアの編集ページへURLで遷移しようとしても案件詳細ページへ遷移する' do
       #ログインしてトップページに遷移する
       basic_path(root_path)
       sign_in(@user_oth)
-      #URLから直接ボランティア投稿ページへ遷移しようとすると案件詳細ページへ遷移する
+      #URLから直接ボランティア編集ページへ遷移しようとすると募集要項ページへ遷移する
       visit edit_quest_path(@quest)
       expect(current_path).to eq(quest_path(@quest))
+    end
+    it '参加者が1人以上いる場合は編集するボタンが表示されない' do
+      join = FactoryBot.create(:join)
+      user = join.quest.user  #ボランティア投稿者
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(user)
+      #投稿した募集詳細へ遷移
+      visit quest_path(join.quest)
+      #ボランティアを編集するボタンが表示されていない
+      expect(page).to have_no_content('編集する')
+    end
+    it '参加者が1人以上いる場合に編集ページへURLで遷移しようとしても案件詳細ページに遷移する' do
+      join = FactoryBot.create(:join)
+      user = join.quest.user
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(user)
+      #URLから直接ボランティア編集ページへ遷移しようとすると案件詳細ページ遷移する
+      visit edit_quest_path(join.quest)
+      expect(current_path).to eq(quest_path(join.quest))
     end
   end
 end
@@ -430,6 +451,150 @@ RSpec.describe "ボランティア募集（削除）", type: :system do
       visit quest_path(@quest)
       #ボランティアを編集するボタンが表示されていない
       expect(page).to have_no_content('破棄する')
+    end
+    it '参加者が1人以上いる場合は破棄するボタンが表示されない' do
+      join = FactoryBot.create(:join)
+      user = join.quest.user  #ボランティア投稿者
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(user)
+      #投稿した募集詳細へ遷移
+      visit quest_path(join.quest)
+      #ボランティアを編集するボタンが表示されていない
+      expect(page).to have_no_content('破棄する')
+    end
+  end
+end
+
+RSpec.describe "ボランティア募集（応募・申請取消）", type: :system do
+  before do
+    @quest = FactoryBot.create(:quest)
+    @user_oth = FactoryBot.create(:user)
+  end
+
+  context 'ボランティアに応募できるとき' do
+    it '募集要項ページの「応募する」ボタンを押すとボランティアに応募できる' do
+      #募集要項ページまで遷移し「応募する」ボタンが表示されていることを確認する
+      basic_path(root_path)
+      sign_in(@user_oth)
+      visit quest_path(@quest)
+      expect(page).to have_link '応募する', href: quest_applies_path(@quest)
+      #「応募する」ボタンをクリックするとApplyモデルのカウントが1上がり募集要項ページへ戻ってくる
+      expect{find_button('応募する').click}.to change { Apply.count }.by(1)
+      expect(current_path).to eq(quest_path(@quest))
+    end
+  end
+  context 'ボランティアの応募申請を取り消せるとき' do
+    it '応募申請が承認前なら取り消せる' do
+      apply = FactoryBot.create(:apply)  #応募済みボランティアを作成
+      #募集要項ページまで遷移し「申請取消」ボタンが表示されていることを確認する
+      basic_path(root_path)
+      sign_in(apply.user)
+      visit quest_path(apply.quest)
+      expect(page).to have_link '申請取消', href: quest_apply_path(apply.quest, apply)
+      #「申請取消」ボタンをクリックするとApplyモデルのカウントが1下がり募集要項ページへ戻ってくる
+      expect{find_button('申請取消').click}.to change { Apply.count }.by(-1)
+      expect(current_path).to eq(quest_path(apply.quest))
+    end
+  end
+  context 'ボランティアに応募できないとき' do
+    it '自身が投稿した募集には「応募する」ボタンが表示されない' do
+      #募集要項ページまで遷移し「応募する」ボタンが表示されていないことを確認する
+      basic_path(root_path)
+      sign_in(@quest.user)
+      visit quest_path(@quest)
+      expect(page).to have_no_link '応募する', href: quest_applies_path(@quest)
+    end
+    it '一度応募すると申請取り消しするまで「応募する」ボタンが表示されない' do
+      #募集要項ページまで遷移し「応募する」ボタンが表示されていることを確認する
+      basic_path(root_path)
+      sign_in(@user_oth)
+      visit quest_path(@quest)
+      expect(page).to have_link '応募する', href: quest_applies_path(@quest)
+      #「応募する」ボタンをクリックするとApplyモデルのカウントが1上がり募集要項ページへ戻ってくる
+      expect{find_button('応募する').click}.to change { Apply.count }.by(1)
+      expect(current_path).to eq(quest_path(@quest))
+      #「応募する」ボタンが表示されなくなり、「申請取消」ボタンが表示されていることを確認する
+      expect(page).to have_no_link '応募する', href: quest_applies_path(@quest)
+      expect(page).to have_content('申請取消')
+    end
+  end
+end
+
+RSpec.describe "ボランティア募集（承認・却下・参加取消）", type: :system do
+  before do
+    @apply = FactoryBot.create(:apply)
+    @user_oth = FactoryBot.create(:user)
+    @user = @apply.quest.user  #募集者
+    @name = @apply.user.last_name + @apply.user.first_name  #応募者名
+  end
+
+  context '応募承認できるとき' do
+    it '募集者が承認待ち一覧から「承認」ボタンを押すと参加承認できる' do
+      #募集者で募集要項ページまで遷移し「承認待ち一覧」ボタンが表示されていることを確認し遷移する
+      basic_path(root_path)
+      sign_in(@user)
+      visit quest_path(@apply.quest)
+      expect(page).to have_link '承認待ち一覧', href: quest_applies_path(@apply.quest)
+      find_button('承認待ち一覧').click
+      expect(current_path).to eq(quest_applies_path(@apply.quest))
+      #承認待ち一覧に承認待ちのユーザー（apply.user）の名前が表示されていることを確認する
+      expect(page).to have_content(@name)
+      #「承認」ボタンを押すとJoinモデルのカウントが1上がり、承認されたユーザー名が一覧から消える
+      expect{find_button('承認').click}.to change { Join.count }.by(1)
+      expect(page).to have_no_content(@name)
+    end
+  end
+  context '応募却下できるとき' do
+    it '募集者が承認待ち一覧から「却下」ボタンを押すと参加を却下できる' do
+      #募集者で承認待ち一覧まで遷移する
+      basic_path(root_path)
+      sign_in(@user)
+      visit quest_applies_path(@apply.quest)
+      #「却下」ボタンを押すとApplyモデルのカウントが1下がり、募集要項に戻る
+      expect{find_button('却下').click}.to change { Apply.count }.by(-1)
+      expect(current_path).to eq(quest_path(@apply.quest))
+    end
+  end
+  context '参加取消できるとき' do
+    it '参加者は募集要項から参加取消できる' do
+      join = FactoryBot.create(:join)
+      user = join.user  #参加者
+      quest = join.quest
+      #参加者で募集要項ページまで遷移し「参加取消」ボタンが表示されていることを確認する
+      basic_path(root_path)
+      sign_in(user)
+      visit quest_path(quest)
+      expect(page).to have_link '参加取消', href: quest_join_path(quest, join)
+      #「参加取消」ボタンをクリックするとJoinモデルのカウントが1下がり募集要項ページへ戻ってくる
+      expect{find_button('参加取消').click}.to change { Join.count }.by(-1)
+      expect(current_path).to eq(quest_path(quest))
+    end
+  end
+  context '応募の承認・却下ができないとき' do
+    it '募集者以外のユーザーは「承認待ち一覧」の表示がされない' do
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(@user_oth)
+      #別のユーザーが投稿した募集詳細へ遷移
+      visit quest_path(@apply.quest)
+      #ボランティアを編集するボタンが表示されていない
+      expect(page).to have_no_content('承認待ち一覧')
+    end
+    it '未ログイン状態でURLから承認待ち一覧へ遷移しようとしてもログインページへ遷移する' do
+      #トップページに遷移する
+      basic_path(root_path)
+      #URLから直接ボランティア編集ページへ遷移しようとするとログインページ遷移する
+      visit quest_applies_path(@apply.quest)
+      expect(current_path).to eq(user_session_path)
+    end
+    it '募集者以外のユーザーがURLから承認待ち一覧へ遷移しようとしても募集要項ページへ遷移する' do
+      #ログインしてトップページに遷移する
+      basic_path(root_path)
+      sign_in(@user_oth)
+      #URLから直接承認待ち一覧ページへ遷移しようとすると募集要項ページへ遷移する
+      visit quest_applies_path(@apply.quest)
+      expect(current_path).to eq(quest_path(@apply.quest))
     end
   end
 end

@@ -163,19 +163,27 @@
       <% if user_signed_in? && current_user.id == @quest.user_id %>
         <div class="row col s4 m4 l4">
           <%= link_to quest_applies_path(@quest) do %>
-            <button class="btn waves-effect waves-light">承認待ち一覧へ<i class="material-icons" style="vertical-align: -4px;">person_add</i></button>
+            <button class="btn waves-effect waves-light">承認待ち一覧<i class="material-icons" style="vertical-align: -4px;">person_add</i></button>
           <% end %>
         </div>
-        <div class="row col s4 m4 l4">
-          <%= link_to edit_quest_path(@quest) do %>
-            <button class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></button>
-          <% end%>
-        </div>
-        <div class="row col s4 m4 l4">
-          <%= link_to quest_path(@quest), method: :delete do %>
-            <button class="btn waves-effect waves-light">破棄する<i class="material-icons" style="vertical-align: -4px;">delete</i></button>
-          <% end %>
-        </div>
+        <% unless Join.exists?(quest_id: @quest.id) %>
+          <div class="row col s4 m4 l4">
+            <%= link_to edit_quest_path(@quest) do %>
+              <button class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></button>
+            <% end%>
+          </div>
+          <div class="row col s4 m4 l4">
+            <%= link_to quest_path(@quest), method: :delete do %>
+              <button class="btn red darken-1 waves-effect waves-light">破棄する<i class="material-icons" style="vertical-align: -4px;">delete</i></button>
+            <% end %>
+          </div>
+        <% else %>
+          <div class="row col s4 m4 l4">
+            <%= link_to quest_joins_path(@quest) do %>
+              <button class="btn green darken-1 waves-effect waves-light">参加者一覧<i class="material-icons" style="vertical-align: -4px;">assignment_ind</i></button>
+            <% end %>
+          </div>
+        <% end %>
       <% else %>
         <% if Join.exists?(quest_id: @quest.id, user_id: current_user.id) %>
           <% unless @messages.exists?(sending_party_id: current_user.id) || @messages.exists?(user_id: current_user.id) %>

@@ -55,7 +55,7 @@ class QuestsController < ApplicationController
   end
 
   def move_quest_show
-    if current_user.id != @quest.user_id
+    if current_user.id != @quest.user_id || Join.exists?(quest_id: @quest.id)
       redirect_to quest_path(@quest)
     end
   end
