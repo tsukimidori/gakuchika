@@ -79,7 +79,7 @@ RSpec.describe "メッセージ送信（募集者側）", type: :system do
     end
   end
   context 'メッセージを送信できないとき' do
-    it 'メッセージを送信済みのユーザーには選択できないようになっている' do
+    it 'メッセージを送信済みのユーザーは選択できないようになっている' do
       #ボランティアに応募したユーザーでログインしてトップページに遷移する
       basic_path(root_path)
       sign_in(@user)
@@ -92,17 +92,6 @@ RSpec.describe "メッセージ送信（募集者側）", type: :system do
       #評価を見るタブに移動し、評価相手を選択しようとすると「名前（評価済み）」となり選択できないようになっている
       click_on '評価を見る・送る'
       expect(find('select[name="message[sending_party_id]"]').click).to have_content("#{user_name(@join.user)}さん（評価済み）"), disabled: true 
-    end
-    #ここから
-    it '参加者ではない場合、「評価する」項目が表示されない' do
-      user_oth = FactoryBot.create(:user)
-      #ボランティアに応募していないユーザーでログインしてトップページに遷移する
-      basic_path(root_path)
-      sign_in(user_oth)
-      #募集要項ページに遷移し評価を送るタブに移動しても「評価する」項目が表示されていない
-      visit quest_path(@quest)
-      click_on '評価を見る・送る'
-      expect(page).to have_no_content("評価する")
     end
   end
 end

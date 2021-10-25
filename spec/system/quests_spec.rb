@@ -272,7 +272,7 @@ RSpec.describe "ボランティア募集（編集）", type: :system do
       click_on '詳細情報'
       expect(page).to have_content(@quest_oth.detail)
     end
-    it '画像、報酬形態、アピールポイント、募集詳細以外を入力していなくても募集内容の変更ができ募集詳細へ遷移する' do
+    it '画像、報酬形態、アピールポイント、募集詳細を入力していなくても募集内容の変更ができ募集詳細へ遷移する' do
       #ボランティアを投稿したユーザーでログインしてトップページに遷移する
       basic_path(root_path)
       sign_in(@quest.user)
