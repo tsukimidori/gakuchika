@@ -32,7 +32,7 @@
                 <%= "#{@user.last_name}#{@user.first_name}" %>
               </div>
               <div class="row">
-                <% if @user.id == current_user.id %>
+                <% if user_signed_in? && @user.id == current_user.id %>
                   <h5>メールアドレス</h5>
                   <%= @user.email %>
                 <% end %>
@@ -43,16 +43,18 @@
               </div>
             </div>
           </div>
-          <% if @user.id == current_user.id %>
-            <div class="row right" style="margin: 20px;">
-              <%= link_to edit_user_registration_path(@user) do %>
-                <p class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></p>
-              <% end %>
-            </div>
+          <% if user_signed_in? %>
+            <% if @user.id == current_user.id %>
+              <div class="row right" style="margin: 20px;">
+                <%= link_to edit_user_registration_path(@user) do %>
+                  <p class="btn waves-effect waves-light">編集する<i class="material-icons" style="vertical-align: -4px;">edit</i></p>
+                <% end %>
+              </div>
+            <% end %>
           <% end %>
           <div class="container">
             <div class="row">
-              <% if @user.id == current_user.id %>
+              <% if user_signed_in? && @user.id == current_user.id %>
                 <%= link_to new_quest_path do %>
                   <p class="btn waves-effect waves-light">ボランティアを募集する<i class="material-icons" style="vertical-align: -4px;">note_add</i></p>
                 <% end %>
