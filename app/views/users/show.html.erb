@@ -20,8 +20,11 @@
         <div id="basic">
           <div class="flex">
             <div class="responsive-img user-frame row col s6 m6 l6">
-              <%= image_tag @user.avatar.variant(gravity: :center, resize:"270x200", crop:"630x420+0+0").processed, class: 'avatar' if @user.avatar.attached? %>
-              <%= image_tag '1907765.png', class: 'avatar' unless @user.avatar.attached? %>
+              <% if @user.avatar.attached? %>
+                <%= image_tag @user.avatar.variant(gravity: :center, resize:"270x200", crop:"630x420+0+0").processed, class: 'avatar' %>
+              <% else %>
+                <img src="https://joeschmoe.io/api/v1/random" class="avatar">
+              <% end %>
             </div>
             <div class="row col s6 m6 l6">
               <div class="row">

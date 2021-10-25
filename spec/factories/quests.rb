@@ -1,6 +1,5 @@
 FactoryBot.define do
   factory :quest do
-    image               {Faker::Lorem.sentence}
     title               {'テスト'}
     reward              {'テスト'}
     date                {Faker::Date.in_date_period}
@@ -12,5 +11,9 @@ FactoryBot.define do
     capacity            {2}
 
     association :user
+
+    after(:build) do |quest|
+      quest.image.attach(io: File.open('public/images/test.png'), filename: 'test.png')
+    end
   end
 end

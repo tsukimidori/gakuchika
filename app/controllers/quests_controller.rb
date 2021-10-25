@@ -1,6 +1,7 @@
 class QuestsController < ApplicationController
   before_action :set_quest, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!, except: [:index]
+  before_action :move_quest_show, only: [:edit, :update, :destroy]
 
   def index
     @quest = Quest.includes(:user).order(id: "DESC").page(params[:page]).without_count.per(6)
@@ -51,6 +52,12 @@ class QuestsController < ApplicationController
 
   def quest_params
     params.require(:quest).permit(:title, :reward, :date, :target, :point, :detail, :place_id, :target_attribute_id, :capacity, :image).merge(user_id: current_user.id)
+  end
+
+  def move_quest_show
+    if current_user.id != @quest.user_id || Join.exists?(quest_id: @quest.id)
+      redirect_to quest_path(@quest)
+    end
   end
 
 end
