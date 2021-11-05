@@ -51,7 +51,7 @@
 ## ランク付け機能
 メッセージ送信の際の５段階評価の総数に対して条件分岐を行っており、一定の評価を超えるとその総数によってS〜Dランクでランク付けされます。
 ![Videotogif](https://i.gyazo.com/ff39c2578c2204fb1379a0f2b42ff79a.gif)
-![Videotogif](https://i.gyazo.com/f2526270e0f2e7cf3ceafb573b416872.gif)
+[![Videotogif](https://i.gyazo.com/f2526270e0f2e7cf3ceafb573b416872.gif)](https://i.gyazo.com/f2526270e0f2e7cf3ceafb573b416872)
 
 # 実装予定の機能
 *  必須機能：案件の終了（募集打ち切り、案件自体の終了）機能
