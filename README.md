@@ -58,7 +58,19 @@
 *  課題解決のための機能：グループ機能
 *  利便性向上のための機能：検索機能、タグ機能
 # ER図
-<img src="https://gyazo.com/43225f310cbab47a317be21387e7a07a" alt="ER図">
+[![Image from Gyazo](https://i.gyazo.com/43225f310cbab47a317be21387e7a07a.png)](https://gyazo.com/43225f310cbab47a317be21387e7a07a)
 
 # ローカルでの動作方法
-*  ※後日
+```ターミナル
+% git clone https://github.com/tsukimidori/gakuchika.git
+% cd gakuchika
+% bundle install
+% rails db:create
+% rails db:migrate
+$ rails s
+```
+# 開発環境
+* フロントエンド：HTML5/CSS(Materialize)/JavaScript(jQuery)
+* バックエンド：Ruby on Rails(6.0.0)/Ruby(2.6.5)
+* テスト：Rspec
+* インフラ：Heroku
