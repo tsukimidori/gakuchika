@@ -28,30 +28,30 @@
 # 実装機能デモ
 ## 応募
 募集案件をクリックし、「応募する」ボタンを押下するとAppliesテーブルにユーザーと案件が追加され、条件分岐によりボタンが「申請取消」に更新されます。
-![Videotogif](https://i.gyazo.com/3aed342ed1cdc84e765eaf02618e5967.gif)
+![応募方法](https://user-images.githubusercontent.com/89961394/140471885-b3719f08-0092-4209-8c33-65353cf82371.gif)
 ## 募集
 ユーザーのマイページから「ボランティアを募集する」ボタンを押下すると、ボランティアの新規募集ページに遷移、項目を入力し投稿することができます。
-![Videotogif](https://i.gyazo.com/b4577dbde301b0b947309f0c4db9fcb0.gif)
+![募集方法](https://user-images.githubusercontent.com/89961394/140471987-63a466e0-75fa-4678-8f5c-59686417f8e6.gif)
 ## 承認
 募集者は自身の募集要項から「承認待ち一覧」ボタンを押下することで承認待ち一覧ページへと遷移します。<br>
 承認待ちユーザー横の「承認」ボタンを押下すると、そのユーザーがJoinsテーブルに案件と共に追加され、該当のAppliesテーブルは削除されます。<br>
 また、この際に募集要項から条件分岐により「編集する」「破棄する」ボタンの表示が「参加者一覧」ボタンに差し変わります。
-![Videotogif](https://i.gyazo.com/6b1845caaaa4d4f11eac8cb0f4cdaef7.gif)
+![承認方法](https://user-images.githubusercontent.com/89961394/140472101-238d6e24-fa28-476c-9020-ff7879b87bbc.gif)
 ## 参加一覧
 募集要項から「参加者一覧」ボタンを押下することで、現在の参加者一覧を見ることができます。
-![Videotogif](https://i.gyazo.com/be777599e24db5ef58dcf6a202518355.gif)
+![参加者確認](https://user-images.githubusercontent.com/89961394/140472249-75210aaf-cfaf-4353-81cd-81731c9b4c24.gif)
 ## メッセージ（募集者側）
 募集者は募集要項の「評価を見る・送る」タブから評価相手とメッセージ、５段階評価を付与して評価を送信できます。<br>
 送信されたメッセージは評価一覧に表示されます。
-![Videotogif](https://i.gyazo.com/e0f458ce86fd42107dca0e1e1ff25f6f.gif)
+![メッセージ（募集者）](https://user-images.githubusercontent.com/89961394/140472359-8e5bdbee-dccb-48c2-8370-7ed38b58c432.gif)
 ## メッセージ（参加者側）
 参加者は募集要項の「評価を見る・送る」タブから募集者に対してのみメッセージ、５段階評価を付与して評価を送信できます。<br>
 送信されたメッセージは評価一覧に表示されます。
-![Videotogif](https://i.gyazo.com/fdb4a09a128b50f87a5d0defd949a920.gif)
+![メッセージ（参加者）](https://user-images.githubusercontent.com/89961394/140472476-f5113117-7263-4b65-94ab-1a4369c64215.gif)
 ## ランク付け機能
 メッセージ送信の際の５段階評価の総数に対して条件分岐を行っており、一定の評価を超えるとその総数によってS〜Dランクでランク付けされます。
-![Videotogif](https://i.gyazo.com/ff39c2578c2204fb1379a0f2b42ff79a.gif)
-[![Videotogif](https://i.gyazo.com/f2526270e0f2e7cf3ceafb573b416872.gif)](https://i.gyazo.com/f2526270e0f2e7cf3ceafb573b416872)
+![ランク（S）](https://user-images.githubusercontent.com/89961394/140472605-2c88f9d0-02ae-41b5-9649-14c505399be6.gif)
+![ランク（B）](https://user-images.githubusercontent.com/89961394/140472710-a7a3f787-c5e8-4d2b-b95c-350f7e206b04.gif)
 
 # 実装予定の機能
 *  必須機能：案件の終了（募集打ち切り、案件自体の終了）機能
