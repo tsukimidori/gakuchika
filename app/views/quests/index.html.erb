@@ -33,38 +33,42 @@
   <div class="row m-flex">
     <% @quest.each do |quest| %>
       <div class="col s12 m4 l2">
-        <div class="card hoverable">
-            <div class="card-image">
-              <%= link_to quest_path(quest) do %>
-                <%= image_tag quest.image, class: 'responsive-img' if quest.image.attached? %>
-                <%= image_tag 'sky_00010.jpeg', class: 'responsive-img' unless quest.image.attached? %>
-              <% end %>
+        <div class="card hoverable sticky-action">
+            <div class="card-image waves-effect waves-block waves-light">
+              <%= image_tag quest.image, class: 'responsive-img activator' if quest.image.attached? %>
+              <%= image_tag 'sky_00010.jpeg', class: 'responsive-img activator' unless quest.image.attached? %>
             </div>
-          <div class="card-tabs">
-            <ul class="tabs tabs-fixed-width  brown lighten-3">
-              <li class="tab"><p class="card-title"><%= quest.title %></p></li>
-            </ul>
+          <div class="card-content register-index">
+            <span class="card-title  activator"><%= quest.title %><i class="material-icons right">more_vert</i></span>
           </div>
-          <table class="responsive-table centered brown lighten-4 center-align  col s12 m12 l12">
-            <thead>
-              <tr>
-                <th>募集者</th>
-                <th>募集人数</th>
-                <th>活動日</th>
-                <th>活動地域</th>
-                <th>参加人数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><%= link_to "#{quest.user.last_name}#{quest.user.first_name}", user_path(quest.user) %></td>
-                <td><%= "#{quest.capacity}人" %></td>
-                <td><%= "#{l quest.date}" %></td>
-                <td><%= "#{quest.place_name}" %></td>
-                <td><%= link_to "#{quest.joins.count}人", quest_joins_path(quest)%></td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="card-reveal register-index">
+            <span class="card-title" style="overflow: scroll;"><%= quest.title %><i class="material-icons right">close</i></span>
+            <br>
+            <table class="responsive-table centered lighten-4 center-align  col s12 m12 l12">
+              <thead>
+                <tr>
+                  <th>募集者</th>
+                  <th>募集人数</th>
+                  <th>活動日</th>
+                  <th>活動地域</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><%= link_to "#{quest.user.last_name}#{quest.user.first_name}", user_path(quest.user), class: "teal-text text-lighten-1" %></td>
+                  <td><%= "#{quest.capacity}人" %></td>
+                  <td><%= "#{l quest.date}" %></td>
+                  <td><%= "#{quest.place_name}" %></td>
+                </tr>
+              </tbody>
+            </table>
+            <br>
+          </div>
+          <div class="card-action register-index">
+            <p>現在の参加人数：<%= link_to "#{quest.joins.count}人", quest_joins_path(quest), class: "teal-text text-lighten-1" %></p>
+            <br>
+            <p><%= link_to '募集詳細・応募', quest_path(quest), class: "teal-text text-lighten-1" %></p>
+          </div>
         </div>
       </div>
     <% end %>

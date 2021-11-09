@@ -88,7 +88,7 @@
                     <% if @joins.exists? %>
                       <% @joins.each do |join| %>
                         <%= link_to quest_path(join.quest) do%>
-                          <p><%= join.quest.title %></p>
+                          <p class="teal-text text-lighten-1"><%= join.quest.title %></p>
                         <% end %>
                         <p><%= "活動日：#{l join.quest.date}"%></p>
                       <% end %>
@@ -101,7 +101,7 @@
                     <% if @quests.exists? %>
                       <% @quests.each do |quest| %>
                         <%= link_to quest_path(quest) do%>
-                          <p><%= quest.title %></p>
+                          <p class="teal-text text-lighten-1"><%= quest.title %></p>
                         <% end %>
                         <p><%= "活動日：#{l quest.date}"%></p>
                       <% end %>

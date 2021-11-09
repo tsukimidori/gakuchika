@@ -1,13 +1,23 @@
 <%- if controller_name != 'sessions' %>
-  <%= link_to "アカウントをお持ちの方はこちら！", new_session_path(resource_name) %><br />
+  <button class="btn amber lighten-3 waves-effect waves-light">
+    <%= link_to "アカウントをお持ちの方はこちら！", new_session_path(resource_name) , class: "teal-text text-lighten-1"%>
+  </button>
+  <br />
 <% end %>
 
 <%- if devise_mapping.registerable? && controller_name != 'registrations' %>
-  <%= link_to "新規登録へ", new_registration_path(resource_name) %><br />
+  <button class="btn amber lighten-3 waves-effect waves-light">
+    <%= link_to "新規登録へ", new_registration_path(resource_name), class: "teal-text text-lighten-1" %>
+  </button>
+  <br />
+  <br />
 <% end %>
 
 <%- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations' %>
-  <%= link_to "パスワードをお忘れですか？", new_password_path(resource_name) %><br />
+  <button class="btn amber lighten-3 waves-effect waves-light">
+    <%= link_to "パスワードをお忘れですか？", new_password_path(resource_name), class: "teal-text text-lighten-1" %>
+  </button>
+  <br />
 <% end %>
 
 <%- if devise_mapping.confirmable? && controller_name != 'confirmations' %>

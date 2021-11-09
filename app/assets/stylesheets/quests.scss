@@ -11,9 +11,13 @@
     display: flex;
     flex-flow: row wrap;
   }
-  .row.m-flex.m-flex .col{ /* 優先度を上げるために2回指定 */
+  .row.m-flex.m-flex .col{
     float: none;
   }
   .row.m-flex.m-flex .col:not([class*="offset-"]){
-    margin-left: unset; /* 元々ついているmargin-left: autoを解除 */
+    margin-left: unset;
   }
+  .register-index{
+    background-image: url("/assets/2608796.jpg");
+    margin: 0;
+   }
