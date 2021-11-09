@@ -65,9 +65,9 @@
             <br>
           </div>
           <div class="card-action register-index">
-            <p>現在の参加人数：<%= link_to "#{quest.joins.count}人", quest_joins_path(quest), class: "teal-text text-lighten-1" %></p>
+            <p>現在の参加者：<%= link_to "#{quest.joins.count}人", quest_joins_path(quest), class: "teal-text text-lighten-1" %></p>
             <br>
-            <p><%= link_to '募集詳細・応募', quest_path(quest), class: "teal-text text-lighten-1" %></p>
+            <%= link_to '募集詳細', quest_path(quest), class: "teal-text text-lighten-1" %></p>
           </div>
         </div>
       </div>
